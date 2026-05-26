@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: krishimitra-postgres
+    environment:
+      POSTGRES_DB: krishimitra
+      POSTGRES_USER: krishi
+      POSTGRES_PASSWORD: krishi123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U krishi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  spring-backend:
+    build: ./backend
+    container_name: krishimitra-backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/krishimitra
+      DB_USER: krishi
+      DB_PASS: krishi123
+      AI_SERVICE_URL: http://python-ai:8000
+      JWT_SECRET: hackathon_secret_key_2025
+      FIREBASE_CREDENTIALS_PATH: classpath:krishimitra-firebase-adminsdk.json
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  python-ai:
+    build: ./ai-service
+    container_name: krishimitra-ai
+    ports:
+      - "8000:8000"
+    environment:
+      OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      DB_URL: postgresql://krishi:krishi123@postgres:5432/krishimitra
+      SPRING_BASE_URL: http://spring-backend:8080
+    depends_on:
+      - postgres
+      - spring-backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
