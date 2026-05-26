@@ -5,43 +5,57 @@
 ### Task: Complete Project Scaffold Generation
 
 **Input**: `README.md` (37KB hackathon MVP spec)
-**Output**: 51 files (46 code + 5 docs)
+**Output**: 57 files (51 code + 6 docs)
+
+---
+
+## Structure Verification (vs README.md Spec)
+
+```
+  BACKEND     : 17/18 spec files present (94%)
+                1 intentionally missing: krishimitra-firebase-adminsdk.json (secret)
+  AI-SERVICE  : 12/12 spec files present (100%) ✅
+  MOBILE      :  7/18 spec files present (39%)
+                2 Firebase secrets (not scaffoldable)
+                6 screens + 3 components = UI work for Juhi
+  ROOT        :  1/1  docker-compose.yml present (100%) ✅
+```
 
 ---
 
 ## What Was Generated
 
-### 1. Backend — Spring Boot (26 files)
+### 1. Backend — Spring Boot (28 files)
 
 | Module | Files | Key Components |
 |--------|-------|----------------|
 | Auth | 5 | AuthController, AuthService, LoginRequest, VerifyRequest, RegisterTokenRequest |
 | Notification | 4 | NotificationService (FCM + DB), NotifyController, NotifyRequest, NotifyResponse |
+| Disease | 4 | DiseaseController, DiseaseService, DiseaseReport entity, DiseaseReportRepository |
+| Advisory | 4 | AdvisoryController, AdvisoryService, Advisory entity, AdvisoryRepository |
 | Farmer | 2 | Farmer entity, FarmerRepository |
 | Farm | 2 | Farm entity, FarmRepository |
 | Crop | 2 | Crop entity, CropRepository |
-| Advisory | 2 | Advisory entity, AdvisoryRepository |
-| Disease | 2 | DiseaseReport entity, DiseaseReportRepository |
 | Config | 3 | FirebaseConfig, SecurityConfig, WebClientConfig |
 | App | 1 | KrishiMitraApplication.java |
 | Resources | 2 | application.yml, V1__initial_schema.sql |
 | Build | 2 | pom.xml, Dockerfile |
 
-### 2. AI Service — Python FastAPI (13 files)
+### 2. AI Service — Python FastAPI (14 files)
 
 | Module | Files | Description |
 |--------|-------|-------------|
 | Main | 1 | FastAPI app with CORS |
 | Routers | 5 | disease, advisory, weather, mandi, __init__ |
-| Services | 5 | vision_service (Claude Vision), llm_service (crop advisory), weather_service (OpenWeatherMap), notify_service (Spring integration), __init__ |
+| Services | 6 | vision_service (Claude Vision), llm_service (crop advisory), weather_service (OpenWeatherMap), notify_service (Spring integration), db_service (asyncpg), __init__ |
 | Config | 3 | requirements.txt, .env.example, Dockerfile |
 
-### 3. Mobile — React Native (10 files)
+### 3. Mobile — React Native (11 files)
 
 | Module | Files | Description |
 |--------|-------|-------------|
 | Store | 3 | Redux store, notificationSlice, farmerSlice |
-| API | 2 | authApi, advisoryApi |
+| API | 3 | authApi, advisoryApi, farmerApi |
 | Services | 1 | FCM notifications setup |
 | Hooks | 1 | useAdvisoryPolling (30s fallback) |
 | Config | 1 | package.json |
@@ -92,6 +106,10 @@
 | POST /api/v1/auth/register-token | ✅ Done |
 | POST /api/v1/notify | ✅ Done |
 | GET /api/v1/health | ✅ Done (FastAPI) |
+| POST /api/v1/disease/detect | ✅ Done (DiseaseController) |
+| POST /api/v1/advisory/chat | ✅ Done (AdvisoryController) |
+| GET /api/v1/advisories | ✅ Done (AdvisoryController) |
+| PATCH /api/v1/advisories/{id}/read | ✅ Done (AdvisoryController) |
 | POST /ai/disease-detect | ✅ Done |
 | POST /ai/advisory | ✅ Done |
 | GET /ai/weather | ✅ Done |
@@ -100,10 +118,6 @@
 | GET /api/v1/farmers/{id} | ⬜ Pending |
 | POST /api/v1/farms | ⬜ Pending |
 | POST /api/v1/crops | ⬜ Pending |
-| POST /api/v1/disease/detect | ⬜ Pending |
-| POST /api/v1/advisory/chat | ⬜ Pending |
-| GET /api/v1/advisories | ⬜ Pending |
-| PATCH /api/v1/advisories/{id}/read | ⬜ Pending |
 | GET /api/v1/weather | ⬜ Pending |
 | GET /api/v1/mandi | ⬜ Pending |
 
@@ -120,11 +134,27 @@
 
 ---
 
+## Verification Round 2 (after filling gaps)
+
+| Layer | Spec Files | Present | Missing | Notes |
+|-------|-----------|---------|---------|-------|
+| Backend | 18 | 17 | 1 | Missing: `firebase-adminsdk.json` (secret, never committed) |
+| AI Service | 12 | 12 | 0 | ✅ Complete |
+| Mobile | 18 | 7 | 11 | 2 Firebase secrets + 6 screens + 3 components = UI work |
+| Root | 1 | 1 | 0 | ✅ Complete |
+| **Total** | **49** | **37** | **12** | 76% complete; missing = intentional exclusions |
+
+### Missing Files — Breakdown
+- **Firebase secrets** (3): `google-services.json`, `GoogleService-Info.plist`, `krishimitra-firebase-adminsdk.json` — from Firebase console only
+- **Mobile screens** (6): DiseaseDetectScreen, AdvisoryChatScreen, HomeScreen, NotificationsScreen, WeatherScreen, MandiScreen — UI components for Juhi
+- **Mobile components** (3): AdvisoryCard, BellIcon, WeatherWidget — UI components for Juhi
+
 ## Next Actions
 
-1. Firebase project setup (Santosh)
+1. Firebase project setup (Santosh) — download 3 credential files
 2. Add API keys to .env (Any team member)
 3. `docker-compose up --build` to verify
-4. Build remaining CRUD controllers (Priyanshu)
-5. Build mobile screens (Juhi)
-6. Test FCM end-to-end (Santosh + Priyanshu)
+4. Build Farmer/Farm/Crop CRUD controllers (Priyanshu, ~1h)
+5. Build WeatherController + MandiController proxy endpoints (Priyanshu, ~30min)
+6. Build mobile screens (Juhi, ~5h)
+7. Test FCM end-to-end (Santosh + Priyanshu)
