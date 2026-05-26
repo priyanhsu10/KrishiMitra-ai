@@ -35,7 +35,7 @@ ai:
 
 firebase:
   credentials:
-    path: ${FIREBASE_CREDENTIALS_PATH:classpath:krishimitra-firebase-adminsdk.json}
+    path: classpath:krishimitra-firebase-adminsdk.json
 
 logging:
   level:
