@@ -42,6 +42,7 @@ public class AuthService {
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("farmer_id", farmer.getId());
+        response.put("name", farmer.getName());
         response.put("is_new_user", farmer.getName() == null);
         response.put("language", farmer.getLanguage());
 

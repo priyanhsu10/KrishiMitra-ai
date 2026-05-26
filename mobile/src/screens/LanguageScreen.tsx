@@ -50,7 +50,7 @@ export default function LanguageScreen({ navigation, route }: Props) {
       // Save language preference to backend
       await farmerApi.create(
         {
-          name: '',
+          farmer_id: farmerId,
           language,
         },
         token

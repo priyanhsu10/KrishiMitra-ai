@@ -59,7 +59,8 @@ export function setupForegroundListener() {
     store.dispatch(addNotification({
       id: advisory_id,
       alertType: alert_type,
-      message: remoteMessage.notification?.body ?? '',
+      messageEn: remoteMessage.notification?.body ?? '',
+      messageMr: remoteMessage.notification?.body ?? '',
       priority,
       isRead: false,
       createdAt: new Date().toISOString(),
