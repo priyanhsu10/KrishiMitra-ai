@@ -5,21 +5,28 @@ import com.krishimitra.farmer.Farmer;
 import com.krishimitra.farmer.FarmerRepository;
 import com.krishimitra.advisory.Advisory;
 import com.krishimitra.advisory.AdvisoryRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class NotificationService {
 
-    private final FirebaseMessaging firebaseMessaging;
+    private final Optional<FirebaseMessaging> firebaseMessaging;
     private final AdvisoryRepository advisoryRepository;
     private final FarmerRepository farmerRepository;
+
+    public NotificationService(Optional<FirebaseMessaging> firebaseMessaging,
+                               AdvisoryRepository advisoryRepository,
+                               FarmerRepository farmerRepository) {
+        this.firebaseMessaging = firebaseMessaging;
+        this.advisoryRepository = advisoryRepository;
+        this.farmerRepository = farmerRepository;
+    }
 
     @Transactional
     public NotifyResponse sendAlert(NotifyRequest req) {
@@ -46,7 +53,7 @@ public class NotificationService {
                 .map(Farmer::getFcmToken)
                 .orElse(null);
 
-            if (fcmToken != null && !fcmToken.isBlank()) {
+            if (fcmToken != null && !fcmToken.isBlank() && firebaseMessaging.isPresent()) {
                 Message message = Message.builder()
                     .setToken(fcmToken)
                     .setNotification(Notification.builder()
@@ -63,14 +70,14 @@ public class NotificationService {
                         .build())
                     .build();
 
-                String response = firebaseMessaging.send(message);
+                String response = firebaseMessaging.get().send(message);
                 log.info("FCM push sent successfully: messageId={}", response);
                 
                 fcmSent = true;
                 advisory.setFcmSent(true);
                 advisoryRepository.save(advisory);
             } else {
-                log.warn("No FCM token for farmer {}", req.getFarmerId());
+                log.warn("No FCM token for farmer {} or Firebase not initialized", req.getFarmerId());
             }
         } catch (Exception e) {
             // Don't throw — advisory is saved, in-app polling will catch it
