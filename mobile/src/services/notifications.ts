@@ -53,15 +53,17 @@ export function setupForegroundListener() {
   return messaging().onMessage(async remoteMessage => {
     console.log('[FCM] Foreground message received:', remoteMessage);
     
-    const { alert_type, priority, advisory_id } = remoteMessage.data ?? {};
+    const alert_type = remoteMessage.data?.alert_type as string | undefined;
+    const priority = remoteMessage.data?.priority as string | undefined;
+    const advisory_id = remoteMessage.data?.advisory_id as string | undefined;
     
     // Add to Redux store and show in-app notification
     store.dispatch(addNotification({
-      id: advisory_id,
-      alertType: alert_type,
+      id: advisory_id ?? '',
+      alertType: alert_type ?? '',
       messageEn: remoteMessage.notification?.body ?? '',
       messageMr: remoteMessage.notification?.body ?? '',
-      priority,
+      priority: priority ?? 'low',
       isRead: false,
       createdAt: new Date().toISOString(),
     }));
