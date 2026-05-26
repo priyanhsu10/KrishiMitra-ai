@@ -149,12 +149,36 @@
 - **Mobile screens** (6): DiseaseDetectScreen, AdvisoryChatScreen, HomeScreen, NotificationsScreen, WeatherScreen, MandiScreen — UI components for Juhi
 - **Mobile components** (3): AdvisoryCard, BellIcon, WeatherWidget — UI components for Juhi
 
+## GitHub Issues Created
+
+✅ **40 issues created** in [priyanhsu10/KrishiMitra-ai](https://github.com/priyanhsu10/KrishiMitra-ai) (all 40 passed)
+
+| Day | Issues | Labels |
+|-----|--------|--------|
+| Day 1 Morning | #1–#10 | `day-1-morning`, `setup` |
+| Day 1 Afternoon | #11–#16 | `day-1-afternoon`, `core-api` |
+| Day 2 | #17–#32 | `day-2`, `ai-features`, `notifications` |
+| Day 3 | #33–#40 | `day-3`, `polish-demo` |
+
+### Per-Owner Breakdown
+| Owner | Issues |
+|-------|--------|
+| Priyanshu | #1, #4–#6, #11, #24–#27, #37, #39 |
+| Akshit | #7, #17–#23 |
+| Juhi | #8–#10, #12–#13, #28–#29, #33, #40 |
+| Santosh | #2–#3, #14–#16, #30–#32, #34–#35, #38 |
+| All | #36 |
+
+> **Note**: All issues are assigned to `@priyanhsu10`. Team members should be added as collaborators and reassigned to their respective owners.
+
 ## Next Actions
 
-1. Firebase project setup (Santosh) — download 3 credential files
-2. Add API keys to .env (Any team member)
-3. `docker-compose up --build` to verify
-4. Build Farmer/Farm/Crop CRUD controllers (Priyanshu, ~1h)
-5. Build WeatherController + MandiController proxy endpoints (Priyanshu, ~30min)
-6. Build mobile screens (Juhi, ~5h)
-7. Test FCM end-to-end (Santosh + Priyanshu)
+1. Add team members as collaborators on [priyanhsu10/KrishiMitra-ai](https://github.com/priyanhsu10/KrishiMitra-ai)
+2. Reassign issues to respective team members
+3. Firebase project setup (Santosh) — download 3 credential files
+4. Add API keys to .env (Any team member)
+5. `docker-compose up --build` to verify
+6. Build Farmer/Farm/Crop CRUD controllers (Priyanshu, ~1h)
+7. Build WeatherController + MandiController proxy endpoints (Priyanshu, ~30min)
+8. Build mobile screens (Juhi, ~5h)
+9. Test FCM end-to-end (Santosh + Priyanshu)
