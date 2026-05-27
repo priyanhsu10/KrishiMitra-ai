@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/LanguageFragment">
+
+    <fragment
+        android:id="@+id/LanguageFragment"
+        android:name="com.krishimitra.mobilev2.LanguageFragment"
+        android:label="Select Language"
+        tools:layout="@layout/fragment_language">
+        <action
+            android:id="@+id/action_LanguageFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_LanguageFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.krishimitra.mobilev2.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_LoginFragment_to_OtpFragment"
+            app:destination="@id/OtpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/OtpFragment"
+        android:name="com.krishimitra.mobilev2.OtpFragment"
+        android:label="Verify OTP"
+        tools:layout="@layout/fragment_otp">
+        <argument
+            android:name="mobile"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_OtpFragment_to_FarmerProfileFragment"
+            app:destination="@id/FarmerProfileFragment" />
+        <action
+            android:id="@+id/action_OtpFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/FarmerProfileFragment"
+        android:name="com.krishimitra.mobilev2.FarmerProfileFragment"
+        android:label="Farmer Profile"
+        tools:layout="@layout/fragment_farmer_profile">
+        <action
+            android:id="@+id/action_FarmerProfileFragment_to_FarmRegistrationFragment"
+            app:destination="@id/FarmRegistrationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FarmRegistrationFragment"
+        android:name="com.krishimitra.mobilev2.FarmRegistrationFragment"
+        android:label="Farm Registration"
+        tools:layout="@layout/fragment_farm_registration">
+        <action
+            android:id="@+id/action_FarmRegistrationFragment_to_CropRegistrationFragment"
+            app:destination="@id/CropRegistrationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CropRegistrationFragment"
+        android:name="com.krishimitra.mobilev2.CropRegistrationFragment"
+        android:label="Crop Registration"
+        tools:layout="@layout/fragment_crop_registration">
+        <argument
+            android:name="farm_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_CropRegistrationFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.krishimitra.mobilev2.HomeFragment"
+        android:label="KrishiMitra Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_HomeFragment_to_DiseaseDetectionFragment"
+            app:destination="@id/DiseaseDetectionFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_AdvisoryChatFragment"
+            app:destination="@id/AdvisoryChatFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_WeatherFragment"
+            app:destination="@id/WeatherFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_MandiFragment"
+            app:destination="@id/MandiFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_NotificationsFragment"
+            app:destination="@id/NotificationsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/DiseaseDetectionFragment"
+        android:name="com.krishimitra.mobilev2.DiseaseDetectionFragment"
+        android:label="Disease Detection"
+        tools:layout="@layout/fragment_disease_detection" />
+
+    <fragment
+        android:id="@+id/AdvisoryChatFragment"
+        android:name="com.krishimitra.mobilev2.AdvisoryChatFragment"
+        android:label="AI Advisory Chat"
+        tools:layout="@layout/fragment_advisory_chat" />
+
+    <fragment
+        android:id="@+id/WeatherFragment"
+        android:name="com.krishimitra.mobilev2.WeatherFragment"
+        android:label="Weather"
+        tools:layout="@layout/fragment_weather" />
+
+    <fragment
+        android:id="@+id/MandiFragment"
+        android:name="com.krishimitra.mobilev2.MandiFragment"
+        android:label="Mandi Prices"
+        tools:layout="@layout/fragment_mandi" />
+
+    <fragment
+        android:id="@+id/NotificationsFragment"
+        android:name="com.krishimitra.mobilev2.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+</navigation>
