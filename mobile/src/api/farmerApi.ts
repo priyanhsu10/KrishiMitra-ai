@@ -7,7 +7,8 @@ export const farmerApi = {
    * Create or update farmer profile.
    */
   async create(farmer: {
-    name: string;
+    farmer_id: string;
+    name?: string;
     language: string;
     village?: string;
     state?: string;
