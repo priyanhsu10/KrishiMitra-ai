@@ -3,7 +3,7 @@ spring:
     name: krishimitra-backend
   
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/krishimitra}
+    url: jdbc:postgresql://localhost:5432/krishimitra
     username: ${DB_USER:krishi}
     password: ${DB_PASS:krishi123}
     driver-class-name: org.postgresql.Driver
@@ -19,7 +19,13 @@ spring:
   
   flyway:
     enabled: true
-    baseline-on-migrate: true
+    url: jdbc:postgresql://localhost:5432/krishimitra   # explicit, avoids datasource misread
+    user: ${DB_USER:krishi}
+    password: ${DB_PASS:krishi123}
+    baseline-on-migrate: true        # safe for existing DBs
+    validate-on-migrate: true        # catches checksum mismatches early
+    out-of-order: false              # enforce strict version ordering
+    schemas: public
     locations: classpath:db/migration
 
 server:
