@@ -103,7 +103,16 @@
         <action
             android:id="@+id/action_HomeFragment_to_NotificationsFragment"
             app:destination="@id/NotificationsFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="com.krishimitra.mobilev2.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/DiseaseDetectionFragment"

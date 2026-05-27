@@ -24,6 +24,7 @@ public class CropRegistrationFragment extends Fragment {
 
     private FragmentCropRegistrationBinding binding;
     private String farmId;
+    private String selectedCrop = "Soybean";
 
     @Nullable
     @Override
@@ -40,8 +41,15 @@ public class CropRegistrationFragment extends Fragment {
             farmId = getArguments().getString("farm_id");
         }
 
+        binding.optionSoybean.setOnClickListener(v -> selectCrop("Soybean", binding.optionSoybean));
+        binding.optionCotton.setOnClickListener(v -> selectCrop("Cotton", binding.optionCotton));
+        binding.optionCorn.setOnClickListener(v -> selectCrop("Corn", binding.optionCorn));
+        binding.optionOnion.setOnClickListener(v -> selectCrop("Onion", binding.optionOnion));
+
         binding.btnSaveCrop.setOnClickListener(v -> {
             String cropType = binding.etCropType.getText().toString();
+            if (cropType.isEmpty()) cropType = selectedCrop;
+            
             String sowingDate = binding.etSowingDate.getText().toString();
             String stage = binding.etStage.getText().toString();
 
@@ -51,6 +59,15 @@ public class CropRegistrationFragment extends Fragment {
                 Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void selectCrop(String crop, View view) {
+        selectedCrop = crop;
+        binding.optionSoybean.setBackgroundResource(R.drawable.bg_lang_option);
+        binding.optionCotton.setBackgroundResource(R.drawable.bg_lang_option);
+        binding.optionCorn.setBackgroundResource(R.drawable.bg_lang_option);
+        binding.optionOnion.setBackgroundResource(R.drawable.bg_lang_option);
+        view.setBackgroundResource(R.drawable.bg_lang_option_selected);
     }
 
     private void saveCrop(String cropType, String sowingDate, String stage) {

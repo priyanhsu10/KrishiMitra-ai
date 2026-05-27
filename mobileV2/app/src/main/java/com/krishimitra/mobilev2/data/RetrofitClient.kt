@@ -11,6 +11,7 @@ import com.krishimitra.mobilev2.data.api.AdvisoryApi
 import com.krishimitra.mobilev2.data.api.WeatherApi
 import com.krishimitra.mobilev2.data.api.MandiApi
 import com.krishimitra.mobilev2.data.api.FarmerApi
+import com.krishimitra.mobilev2.data.api.NotifyApi
 
 /**
  * Singleton Retrofit client for API communication.
@@ -68,5 +69,9 @@ object RetrofitClient {
 
     val mandiApi: MandiApi by lazy {
         retrofit.create(MandiApi::class.java)
+    }
+
+    val notifyApi: NotifyApi by lazy {
+        retrofit.create(NotifyApi::class.java)
     }
 }

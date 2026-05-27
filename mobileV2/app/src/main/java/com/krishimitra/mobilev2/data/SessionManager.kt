@@ -30,6 +30,18 @@ class SessionManager(context: Context) {
 
     fun getFarmerName(): String? = prefs.getString("farmer_name", null)
 
+    fun saveState(state: String) {
+        prefs.edit().putString("farmer_state", state).apply()
+    }
+
+    fun getState(): String? = prefs.getString("farmer_state", "Maharashtra")
+
+    fun saveCropType(cropType: String) {
+        prefs.edit().putString("active_crop", cropType).apply()
+    }
+
+    fun getCropType(): String? = prefs.getString("active_crop", "Soybean")
+
     fun saveLanguage(language: String) {
         prefs.edit().putString("language", language).apply()
     }

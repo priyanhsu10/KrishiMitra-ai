@@ -66,6 +66,7 @@ public class FarmerProfileFragment extends Fragment {
                 binding.btnSave.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     sessionManager.saveFarmerName(response.body().getName());
+                    sessionManager.saveState(state);
                     NavHostFragment.findNavController(FarmerProfileFragment.this)
                             .navigate(R.id.action_FarmerProfileFragment_to_FarmRegistrationFragment);
                 } else {
