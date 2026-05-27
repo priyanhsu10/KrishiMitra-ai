@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Farm Details"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"/>
+
+    <EditText
+        android:id="@+id/et_farm_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Farm Name (e.g., Home Farm)"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/et_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Area in Acres"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/et_soil_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Soil Type"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location (Auto-detected)"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/tv_lat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lat: 0.0"/>
+
+        <TextView
+            android:id="@+id/tv_lon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lon: 0.0"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_save_farm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Farm"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>

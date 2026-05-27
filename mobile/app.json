@@ -14,13 +14,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.krishimitra.app"
+      "bundleIdentifier": "com.krishimitra"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#2E7D32"
       },
-      "package": "com.krishimitra.app",
+      "package": "com.krishimitra",
       "googleServicesFile": "./android/app/google-services.json",
       "permissions": [
         "android.permission.RECORD_AUDIO",
@@ -37,6 +37,6 @@
         "projectId": "834a59f5-98f6-4971-a024-4b14d024fd06"
       }
     },
-    "owner": "priyanshupaate"
+    "owner": "priyansupaate"
   }
 }
