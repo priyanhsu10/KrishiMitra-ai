@@ -1,25 +1,59 @@
-import anthropic
 import base64
 import os
 import json
 import logging
 from typing import Dict
+from openai import OpenAI
+import re
 
 logger = logging.getLogger(__name__)
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+# OpenRouter client configured with Claude model
+# Initialise OpenRouter client. If the API key is missing, raise a clear error.
+api_key = os.getenv("OPENROUTER_API_KEY")
+if not api_key:
+    raise EnvironmentError("OPENROUTER_API_KEY not set in environment. Please add it to your .env file.")
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=api_key,
+    default_headers={
+        "HTTP-Referer": os.getenv("SITE_URL", "https://krishimitra.app"),
+        "X-Title": os.getenv("SITE_NAME", "KrishiMitra AI"),
+    }
+)
 
 DISEASE_PROMPT = """
-You are an expert plant pathologist for Indian agriculture (Maharashtra region).
+You are a senior plant pathologist and agricultural extension expert specializing in Maharashtra, India.
+Your diagnosis directly affects a farmer's livelihood, income, and crop survival.
+A wrong diagnosis can lead to crop loss, wasted money on incorrect pesticides, and financial hardship.
+Therefore, accuracy, honesty about uncertainty, and safe recommendations are paramount.
+
 Crop type: {crop_type}
-Analyze this leaf image and respond ONLY in valid JSON (no markdown, no explanation):
+
+Analyze the uploaded leaf image carefully. Consider:
+- Common diseases affecting this crop in Maharashtra's agro-climatic zones (Vidarbha, Marathwada, Konkan, Western Ghats, Pune plateau)
+- Seasonal context: Kharif (June–Oct), Rabi (Nov–Mar), Summer crops
+- Symptoms visible in the image: lesion shape/color, pattern spread, necrosis, chlorosis, fungal bodies, water-soaking
+- Diseases that are visually similar (differential diagnosis) to avoid misidentification
+- Whether the image quality is sufficient to make a confident diagnosis
+
+Verification standard before responding:
+- Is the symptom pattern consistent with the named disease? (leaf spot pattern, color, margin definition)
+- Is this disease known to occur in Maharashtra for this crop?
+- Does severity match what is visible in the image?
+- Are the remedies you suggest approved and available in India (CIB&RC registered)?
+- Are dosages within safe limits as per label recommendations?
+- If two diseases look similar, lower confidence and note ambiguity in cause field
+
+Respond ONLY in valid JSON (no markdown, no explanation):
 
 {{
   "disease": "English disease name",
   "disease_mr": "रोगाचे नाव मराठीत",
   "confidence": 0.85,
   "severity": "high",
-  "cause": "Brief cause",
+  "cause_en": "Brief cause",
+  "cause_mr": "संक्षिप्त कारण",
   "remedy_en": "Specific remedy with dosage e.g. 5ml Profenofos per litre, spray in evening",
   "remedy_mr": "मराठीत उपाय (specific with dosage)",
   "consult_expert": true
@@ -28,9 +62,13 @@ Analyze this leaf image and respond ONLY in valid JSON (no markdown, no explanat
 Rules:
 - confidence: 0.0 to 1.0
 - severity: low | medium | high
-- If unclear image, set confidence < 0.5
-- Never recommend unsafe chemical quantities
-- Be specific about timing and dosage
+- If image is unclear, blurry, or symptom is ambiguous, set confidence < 0.5
+- If two diseases match equally, pick the more common one for Maharashtra and lower confidence to ≤ 0.6
+- Never recommend unsafe chemical quantities; follow CIB&RC label rates
+- Remedies must be India-registered products available in local agro-shops
+- Include timing (morning/evening spray), water volume, and repeat interval in remedy
+- Set consult_expert: true whenever confidence < 0.7 or disease is uncommon
+- Be specific about timing and dosage — a farmer's crop depends on this advice
 """
 
 async def analyze_disease(
@@ -45,18 +83,16 @@ async def analyze_disease(
     try:
         b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
 
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+        response = client.chat.completions.create(
+            model="anthropic/claude-sonnet-4-5",  # OpenRouter model identifier (updated)
             max_tokens=1000,
             messages=[{
                 "role": "user",
                 "content": [
                     {
-                        "type": "image",
-                        "source": {
-                            "type": "base64",
-                            "media_type": "image/jpeg",
-                            "data": b64
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{b64}"
                         }
                     },
                     {
@@ -67,8 +103,23 @@ async def analyze_disease(
             }]
         )
 
-        # Parse JSON response
-        result = json.loads(response.content[0].text)
+        # Parse JSON response robustly
+        # The LLM may wrap the JSON in markdown fences or include extra text.
+        # Extract the JSON block using regex and strip any leftover markdown.
+        raw_content = response.choices[0].message.content
+        print(raw_content)
+        if isinstance(raw_content, str):
+            # Remove possible markdown code fences (``` or ```json)
+            cleaned = re.sub(r"```(?:json)?\s*|```", "", raw_content, flags=re.IGNORECASE).strip()
+            # Find the first JSON object
+            match = re.search(r"\{.*\}", cleaned, re.DOTALL)
+            json_str = match.group(0) if match else cleaned
+            print("after cleaning ")
+            print(json_str)
+        else:
+            print("coming json format directly --")
+            json_str = str(raw_content)
+        result = json.loads(json_str)
         logger.info(f"Disease analysis complete: {result.get('disease')} (confidence: {result.get('confidence')})")
         
         return result
@@ -80,7 +131,8 @@ async def analyze_disease(
             "disease_mr": "विश्लेषण त्रुटी",
             "confidence": 0.0,
             "severity": "low",
-            "cause": "Unable to analyze image",
+            "cause_en": "Unable to analyze image",
+            "cause_mr": "कृपया स्पष्ट प्रतिमेसह पुन्हा प्रयत्न करा",
             "remedy_en": "Please try again with a clearer image",
             "remedy_mr": "कृपया स्पष्ट प्रतिमेसह पुन्हा प्रयत्न करा",
             "consult_expert": True
