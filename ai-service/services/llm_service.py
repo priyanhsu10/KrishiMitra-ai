@@ -1,35 +1,53 @@
-import anthropic
 import os
 import json
 import logging
+import yaml
+from pathlib import Path
 from typing import Dict
+
+# Load .env if present
+try:
+    from dotenv import load_dotenv
+    # Look for .env in the ai-service directory
+    env_path = Path(__file__).parent.parent / '.env'
+    if env_path.exists():
+        load_dotenv(dotenv_path=str(env_path))
+except ImportError:
+    pass
+
+from openai import OpenAI
 
 logger = logging.getLogger(__name__)
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+# Load Marathi prompt templates
+TEMPLATE_PATH = Path(__file__).parent.parent / "prompts" / "marathi_advisory.yaml"
+with TEMPLATE_PATH.open(encoding='utf-8') as f:
+    MARATHI_TEMPLATES = yaml.safe_load(f)
 
-ADVISORY_PROMPT = """
-You are KrishiMitra AI, an expert agricultural advisor for Indian farmers.
-Always respond in {language} (Marathi/Hindi/English as specified).
-Be concise, practical, and use simple language farmers understand.
-Do NOT give unsafe advice. Recommend expert consultation for serious disease.
+# OpenRouter client configured with Claude model
+# Initialise OpenRouter client. If the API key is missing, raise a clear error.
+api_key = os.getenv("OPENROUTER_API_KEY")
+if not api_key:
+    raise EnvironmentError("OPENROUTER_API_KEY not set in environment. Please add it to your .env file.")
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=api_key,
+    default_headers={
+        "HTTP-Referer": os.getenv("SITE_URL", "https://krishimitra.app"),
+        "X-Title": os.getenv("SITE_NAME", "KrishiMitra AI"),
+    }
+)
 
-Context:
-- Crop: {crop_type}
-- Stage: {stage}
-- Location: Maharashtra
-- Weather: {weather_summary}
-
-Farmer's question: {question}
-
-Respond in 3-4 sentences. Include:
-1. What the problem likely is
-2. Specific action (e.g. "5kg urea per acre")
-3. When to act (timeline)
-
-Also return a JSON footer on the last line:
-{{"alert_type": "fertilizer|disease|irrigation|weather|market", "priority": "high|medium|low"}}
-"""
+def get_advisory_prompt(crop_type: str, stage: str, language: str, question: str, weather_summary: str) -> str:
+    """Generate advisory prompt from YAML template."""
+    template = MARATHI_TEMPLATES['advisory']['user_prompt']
+    return template.format(
+        crop_type=crop_type,
+        stage=stage,
+        language=language,
+        question=question,
+        weather_summary=weather_summary
+    )
 
 async def get_crop_advisory(
     crop_type: str,
@@ -43,22 +61,18 @@ async def get_crop_advisory(
     Returns advice text and alert classification.
     """
     try:
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+        prompt = get_advisory_prompt(crop_type, stage, language, question, weather_summary)
+        
+        response = client.chat.completions.create(
+            model="anthropic/claude-3.5-sonnet",  # OpenRouter model identifier
             max_tokens=500,
             messages=[{
                 "role": "user",
-                "content": ADVISORY_PROMPT.format(
-                    language=language,
-                    crop_type=crop_type,
-                    stage=stage,
-                    weather_summary=weather_summary,
-                    question=question
-                )
+                "content": prompt
             }]
         )
 
-        text = response.content[0].text
+        text = response.choices[0].message.content
         
         # Extract JSON footer if present
         lines = text.strip().split('\n')
