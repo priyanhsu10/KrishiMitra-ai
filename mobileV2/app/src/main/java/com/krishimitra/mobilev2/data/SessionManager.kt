@@ -42,6 +42,12 @@ class SessionManager(context: Context) {
 
     fun getCropType(): String? = prefs.getString("active_crop", "Soybean")
 
+    fun saveCropId(cropId: String) {
+        prefs.edit().putString("active_crop_id", cropId).apply()
+    }
+
+    fun getCropId(): String? = prefs.getString("active_crop_id", null)
+
     fun saveLanguage(language: String) {
         prefs.edit().putString("language", language).apply()
     }

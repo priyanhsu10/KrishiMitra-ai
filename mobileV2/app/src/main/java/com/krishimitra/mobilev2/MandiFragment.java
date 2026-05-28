@@ -73,13 +73,31 @@ public class MandiFragment extends Fragment {
 
     private void displayPrices(MandiResponse mandi) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Crop: ").append(mandi.getCrop()).append("\n");
-        sb.append("Best time to sell: ").append(mandi.getBest_time_to_sell()).append("\n\n");
+        String language = sessionManager.getLanguage();
+        boolean isMarathi = "mr".equalsIgnoreCase(language);
+
+        sb.append(isMarathi ? "पीक: " : "Crop: ").append(mandi.getCrop()).append("\n");
+        
+        String advisory = isMarathi ? mandi.getAdvice_mr() : mandi.getAdvice_en();
+        sb.append(isMarathi ? "सल्ला: " : "Advisory: ").append(advisory).append("\n");
+        
+        String bestTime = mandi.getBest_time_to_sell();
+        if (isMarathi) {
+            bestTime = "now".equals(bestTime) ? "आता (Now)" : "पुढील आठवड्यात (Next Week)";
+        }
+        sb.append(isMarathi ? "विक्रीसाठी सर्वोत्तम वेळ: " : "Best time to sell: ").append(bestTime).append("\n\n");
         
         for (MandiPrice price : mandi.getPrices()) {
-            sb.append("Market: ").append(price.getMarket()).append(" (").append(price.getDistrict()).append(")\n");
-            sb.append("Avg Price: ₹").append(price.getAverage_price()).append("\n");
-            sb.append("Range: ₹").append(price.getMin_price()).append(" - ₹").append(price.getMax_price()).append("\n\n");
+            sb.append(isMarathi ? "बाजार: " : "Market: ").append(price.getMandi()).append("\n");
+            sb.append(isMarathi ? "दर: ₹" : "Price: ₹").append(price.getPrice_per_quintal()).append(isMarathi ? " प्रति क्विंटल" : " per quintal").append("\n");
+            
+            String trend = price.getTrend();
+            if (isMarathi) {
+                if ("rising".equals(trend)) trend = "वाढत आहे (Rising)";
+                else if ("falling".equals(trend)) trend = "कमी होत आहे (Falling)";
+                else trend = "स्थिर (Stable)";
+            }
+            sb.append(isMarathi ? "कल: " : "Trend: ").append(trend).append("\n\n");
         }
         
         binding.tvMandiInfo.setText(sb.toString());

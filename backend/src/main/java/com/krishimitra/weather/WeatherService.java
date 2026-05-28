@@ -7,6 +7,7 @@ import com.krishimitra.farm.FarmRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -28,22 +29,17 @@ public class WeatherService {
     private String aiServiceUrl;
 
     /**
-     * Full weather advisory flow:
-     * 1. Look up farmer's farm to get lat/lon
-     * 2. Find the most recent crop on that farm (for context)
-     * 3. Call Python AI /ai/weather with all params
-     * 4. Return the enriched response to mobile
-     *
-     * Python AI handles: OpenWeatherMap fetch → LLM advisory → POST /notify if rain>20mm
+     * Full weather advisory flow with caching to prevent redundant AI service calls.
      */
-    public WeatherResponse getWeatherAdvisory(UUID farmerId, UUID farmId) {
+    @Cacheable(value = "weather", key = "{#farmerId, #farmId, #language}", unless = "#result == null")
+    public WeatherResponse getWeatherAdvisory(UUID farmerId, UUID farmId, String language) {
 
         // Step 1: Resolve farm → get coordinates
         Farm farm = resolveFarm(farmerId, farmId);
         double lat = farm.getLatitude().doubleValue();
         double lon = farm.getLongitude().doubleValue();
 
-        log.info("Fetching weather for farmerId={}, lat={}, lon={}", farmerId, lat, lon);
+        log.info("Fetching weather for farmerId={}, lat={}, lon={}, lang={}", farmerId, lat, lon, language);
 
         // Step 2: Find most recent crop on this farm (best-effort, fallback to defaults)
         String cropType = "general";
@@ -76,7 +72,7 @@ public class WeatherService {
                     .queryParam("lon", lon)
                     .queryParam("crop", finalCropType)
                     .queryParam("stage", finalStage)
-                    .queryParam("lang", "marathi")
+                    .queryParam("lang", language)
                     .queryParam("farmer_id", farmerId.toString())
                     .queryParam("crop_id", cropIdStr)
                     .build())
@@ -120,14 +116,13 @@ public class WeatherService {
 
     @SuppressWarnings("unchecked")
     private WeatherResponse mapAiResponseToWeatherResponse(Map<String, Object> ai) {
-        // AI service returns: weather_summary, advice_mr, advice_en, temperature,
+        // AI service returns: weather_summary, advice, advice_mr, advice_en, temperature,
         //                     humidity, rainfall_mm, description, priority, notification_sent
         String weatherSummary = (String) ai.getOrDefault("weather_summary",
             "Weather data retrieved successfully");
-        String adviceMr = (String) ai.getOrDefault("advice_mr",
-            ai.getOrDefault("advice", "हवामान सल्ला उपलब्ध नाही").toString());
-        String adviceEn = (String) ai.getOrDefault("advice_en",
-            ai.getOrDefault("advice", "Weather advice unavailable").toString());
+        String advice = (String) ai.getOrDefault("advice", "");
+        String adviceMr = (String) ai.getOrDefault("advice_mr", "");
+        String adviceEn = (String) ai.getOrDefault("advice_en", "");
         String priority  = (String) ai.getOrDefault("priority", "medium");
         boolean notifSent = Boolean.TRUE.equals(ai.get("notification_sent"));
 
@@ -138,6 +133,7 @@ public class WeatherService {
 
         return WeatherResponse.builder()
             .weatherSummary(weatherSummary)
+            .advice(advice)
             .adviceMr(adviceMr)
             .adviceEn(adviceEn)
             .alertType("weather")

@@ -1,0 +1,1094 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --green:#2E7D32;--green-light:#4CAF50;--green-pale:#E8F5E9;--green-mid:#A5D6A7;
+    --amber:#F57F17;--amber-light:#FFB300;--amber-pale:#FFF8E1;
+    --red:#C62828;--red-pale:#FFEBEE;
+    --blue:#1565C0;--blue-pale:#E3F2FD;
+    --bg:#F5F5F0;--card:#FFFFFF;--text:#1A1A1A;--muted:#6B6B6B;--border:#E0E0E0;
+    --radius:12px;--phone-w:220px;
+  }
+  body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);padding:24px 16px}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .page-title{font-size:18px;font-weight:600;color:var(--green);margin-bottom:4px;text-align:center}
+  .page-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:28px}
+
+  /* Section labels */
+  .section{margin-bottom:40px}
+  .section-label{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;padding-left:4px}
+
+  /* Phone frames row */
+  .phones{display:flex;flex-wrap:wrap;gap:20px;justify-content:flex-start}
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .screen-label{font-size:11px;color:var(--muted);font-weight:500;text-align:center;max-width:var(--phone-w)}
+
+  /* Android phone frame */
+  .phone{
+    width:var(--phone-w);min-height:420px;background:#111;border-radius:32px;
+    padding:10px 6px;box-shadow:0 8px 32px rgba(0,0,0,.22);
+    display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+  .phone-notch{width:60px;height:8px;background:#222;border-radius:4px;margin:0 auto 6px;flex-shrink:0}
+  .phone-screen{
+    flex:1;background:var(--bg);border-radius:22px;overflow:hidden;
+    display:flex;flex-direction:column;min-height:380px;
+  }
+
+  /* Status bar */
+  .sbar{background:var(--green);display:flex;justify-content:space-between;align-items:center;padding:4px 10px;flex-shrink:0}
+  .sbar-time{font-size:9px;color:#fff;font-weight:500}
+  .sbar-icons{display:flex;gap:3px;align-items:center}
+  .sbar-icons span{font-size:8px;color:#fff}
+
+  /* Topbar */
+  .topbar{background:var(--green);padding:8px 12px 10px;display:flex;align-items:center;gap:6px;flex-shrink:0}
+  .topbar-title{font-size:13px;font-weight:600;color:#fff;flex:1}
+  .topbar-icon{width:22px;height:22px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .topbar-icon span{font-size:11px;color:#fff}
+
+  /* Screen content */
+  .scr{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg)}
+  .scr-pad{padding:10px}
+
+  /* Bottom nav */
+  .bnav{background:#fff;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:6px 0 8px;flex-shrink:0}
+  .bnav-item{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
+  .bnav-item span.icon{font-size:16px}
+  .bnav-item span.lbl{font-size:7.5px;color:var(--muted)}
+  .bnav-item.active span.icon{color:var(--green)}
+  .bnav-item.active span.lbl{color:var(--green);font-weight:500}
+
+  /* Cards */
+  .card{background:#fff;border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid var(--border)}
+  .card-row{display:flex;align-items:center;gap:8px}
+
+  /* Chips */
+  .chip{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:500}
+  .chip-green{background:var(--green-pale);color:var(--green)}
+  .chip-red{background:var(--red-pale);color:var(--red)}
+  .chip-amber{background:var(--amber-pale);color:var(--amber)}
+  .chip-blue{background:var(--blue-pale);color:var(--blue)}
+
+  /* Avatar circle */
+  .avatar{width:32px;height:32px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+
+  /* Input fields */
+  .inp{width:100%;background:#F8F8F5;border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:11px;color:var(--text);margin-bottom:6px}
+  .inp::placeholder{color:#bbb}
+
+  /* Buttons */
+  .btn-primary{background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px;width:100%;font-size:11px;font-weight:600;text-align:center;margin-top:4px}
+  .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);border-radius:8px;padding:7px;width:100%;font-size:11px;font-weight:500;text-align:center;margin-top:4px}
+  .btn-sm{background:var(--green);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:9px;font-weight:600}
+
+  /* Misc */
+  .divider{height:1px;background:var(--border);margin:8px 0}
+  .txt-sm{font-size:10px;color:var(--muted)}
+  .txt-xs{font-size:9px;color:var(--muted)}
+  .txt-md{font-size:11px;color:var(--text)}
+  .txt-bold{font-size:11px;font-weight:600;color:var(--text)}
+  .txt-green{color:var(--green);font-weight:600}
+  .mr-text{font-family:'Noto Sans Devanagari',sans-serif;font-size:10px;color:var(--text)}
+
+  /* OTP boxes */
+  .otp-row{display:flex;gap:6px;justify-content:center;margin:12px 0 8px}
+  .otp-box{width:30px;height:36px;border:2px solid var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--green);background:#fff}
+  .otp-box.empty{border-color:var(--border);color:transparent}
+
+  /* Weather row */
+  .w-row{display:flex;gap:6px;overflow:hidden}
+  .w-card{flex:1;background:#fff;border-radius:8px;border:1px solid var(--border);padding:7px;text-align:center;min-width:0}
+
+  /* Chat bubbles */
+  .bubble-user{background:var(--green);color:#fff;border-radius:12px 12px 4px 12px;padding:6px 9px;font-size:9.5px;margin:0 0 6px 24px;line-height:1.4}
+  .bubble-ai{background:#fff;border:1px solid var(--border);border-radius:12px 12px 12px 4px;padding:6px 9px;font-size:9.5px;margin:0 24px 6px 0;line-height:1.4}
+  .bubble-ai .mr{font-family:'Noto Sans Devanagari',sans-serif;font-size:9px;color:var(--muted);margin-top:3px}
+
+  /* Mandi table */
+  .mandi-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)}
+  .mandi-row:last-child{border-bottom:none}
+
+  /* Notification items */
+  .notif-item{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)}
+  .notif-dot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0}
+
+  /* Progress bar */
+  .prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin:4px 0}
+  .prog-fill{height:100%;border-radius:3px}
+
+  /* Map placeholder */
+  .map-ph{background:linear-gradient(135deg,#C8E6C9 0%,#A5D6A7 100%);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:4px}
+
+  /* Step indicator */
+  .steps{display:flex;gap:4px;align-items:center;margin-bottom:10px}
+  .step-dot{width:20px;height:4px;border-radius:2px}
+  .step-dot.done{background:var(--green)}
+  .step-dot.active{background:var(--amber)}
+  .step-dot.todo{background:var(--border)}
+</style>
+
+<h2 class="sr-only">KrishiMitra Android app screen designs covering all user flows: onboarding, login, OTP, registration, home dashboard, disease detection, AI advisory chat, weather alerts, mandi prices, and notifications.</h2>
+
+<div class="page-title">🌾 KrishiMitra — Android Screen Designs</div>
+<div class="page-sub">Complete UI handoff — all flows & screens</div>
+
+<!-- ── FLOW 1: ONBOARDING & AUTH ── -->
+<div class="section">
+  <div class="section-label">① Onboarding & Auth Flow</div>
+  <div class="phones">
+
+    <!-- Screen 1: Splash / Language -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="flex:1;background:var(--green);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px">
+            <div style="font-size:48px;margin-bottom:8px">🌾</div>
+            <div style="font-size:20px;font-weight:700;color:#fff;letter-spacing:.02em">KrishiMitra</div>
+            <div class="mr-text" style="color:#A5D6A7;font-size:12px;margin-top:2px">कृषीमित्र</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:4px">AI-powered farm assistant</div>
+          </div>
+          <div style="background:#fff;border-radius:20px 20px 0 0;padding:16px">
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:12px;text-align:center">भाषा निवडा / Select Language</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="border:2px solid var(--green);border-radius:8px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:11px;font-weight:500">मराठी</span>
+                <span style="font-size:8px;color:var(--green)">✓ Selected</span>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:11px">हिंदी</span>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:11px">English</span>
+              </div>
+            </div>
+            <div class="btn-primary" style="margin-top:10px">पुढे जा / Continue →</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Splash + Language Selection</div>
+    </div>
+
+    <!-- Screen 2: Phone Login -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="background:var(--green);padding:20px 14px 30px;flex-shrink:0">
+            <div style="font-size:16px;font-weight:700;color:#fff">👋 नमस्कार!</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.8);margin-top:4px">आपला मोबाइल नंबर टाका</div>
+          </div>
+          <div style="background:#fff;border-radius:20px 20px 0 0;margin-top:-12px;flex:1;padding:16px">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Mobile Number</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px">
+              <div style="background:#F8F8F5;border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:11px;font-weight:600;white-space:nowrap">🇮🇳 +91</div>
+              <input class="inp" style="flex:1;margin:0" placeholder="9876543210" value="9876543210" type="tel" />
+            </div>
+            <div class="btn-primary">OTP पाठवा / Send OTP</div>
+            <div style="text-align:center;margin-top:10px">
+              <span style="font-size:9px;color:var(--muted)">By continuing you agree to our </span>
+              <span style="font-size:9px;color:var(--blue)">Terms & Privacy</span>
+            </div>
+            <div class="divider" style="margin:16px 0"></div>
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--muted);margin-bottom:6px">New farmer? / नवीन शेतकरी?</div>
+              <div class="btn-outline">नोंदणी करा / Register</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Login — Phone Number</div>
+    </div>
+
+    <!-- Screen 3: OTP Verify -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="background:var(--green);padding:20px 14px 30px;flex-shrink:0">
+            <div style="font-size:14px;font-weight:700;color:#fff">OTP पडताळणी</div>
+            <div style="font-size:9.5px;color:rgba(255,255,255,.8);margin-top:3px">+91 98765 43210 वर पाठवले</div>
+          </div>
+          <div style="background:#fff;border-radius:20px 20px 0 0;margin-top:-12px;flex:1;padding:16px">
+            <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:4px">Enter 6-digit OTP</div>
+            <div class="otp-row">
+              <div class="otp-box">1</div>
+              <div class="otp-box">2</div>
+              <div class="otp-box">3</div>
+              <div class="otp-box">4</div>
+              <div class="otp-box">5</div>
+              <div class="otp-box">6</div>
+            </div>
+            <div style="text-align:center;font-size:9px;color:var(--muted);margin-bottom:12px">(Demo PIN: 123456)</div>
+            <div class="btn-primary">✓ पडताळा / Verify</div>
+            <div style="text-align:center;margin-top:10px;font-size:9.5px;color:var(--muted)">
+              OTP नाही? <span style="color:var(--green);font-weight:500">पुन्हा पाठवा (28s)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">OTP Verification</div>
+    </div>
+
+    <!-- Screen 4: Registration -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar"><div style="font-size:18px">←</div><span class="topbar-title">नोंदणी / Register</span></div>
+          <div class="scr-pad" style="overflow-y:auto">
+            <div class="steps">
+              <div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot todo"></div><div class="step-dot todo"></div>
+              <span style="font-size:9px;color:var(--muted);margin-left:4px">Step 2 of 4 — Farmer Info</span>
+            </div>
+            <input class="inp" placeholder="पूर्ण नाव / Full Name" value="रामचंद्र पाटील" />
+            <input class="inp" placeholder="गाव / Village" value="पुणे जिल्हा, महाराष्ट्र" />
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">राज्य / State</div>
+            <div style="background:#F8F8F5;border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:11px;color:var(--text);margin-bottom:6px;display:flex;justify-content:space-between">
+              <span>Maharashtra</span><span style="color:var(--muted)">▾</span>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">भाषा / Preferred Language</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px">
+              <div style="flex:1;background:var(--green);color:#fff;border-radius:6px;padding:5px;text-align:center;font-size:10px;font-weight:500">मराठी</div>
+              <div style="flex:1;background:#fff;border:1px solid var(--border);border-radius:6px;padding:5px;text-align:center;font-size:10px">हिंदी</div>
+              <div style="flex:1;background:#fff;border:1px solid var(--border);border-radius:6px;padding:5px;text-align:center;font-size:10px">English</div>
+            </div>
+            <div class="btn-primary">पुढे / Next →</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Farmer Registration</div>
+    </div>
+
+    <!-- Screen 5: Farm Setup -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar"><div style="font-size:18px">←</div><span class="topbar-title">शेत माहिती / Farm Info</span></div>
+          <div class="scr-pad" style="overflow-y:auto">
+            <div class="steps">
+              <div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot todo"></div>
+              <span style="font-size:9px;color:var(--muted);margin-left:4px">Step 3 of 4 — Farm</span>
+            </div>
+            <input class="inp" placeholder="शेताचे नाव" value="पाटील शेती" />
+            <div class="map-ph" style="height:80px;margin-bottom:6px;position:relative">
+              <span style="font-size:18px">📍</span>
+              <span style="font-size:9.5px;color:var(--green);font-weight:500">Location Selected</span>
+              <span style="font-size:8.5px;color:var(--muted)">18.5204° N, 73.8567° E</span>
+              <div style="position:absolute;top:6px;right:6px;background:#fff;border-radius:4px;padding:2px 6px;font-size:8px;color:var(--blue)">Change</div>
+            </div>
+            <input class="inp" placeholder="क्षेत्रफळ (एकर)" value="3.5" type="number" />
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">जमिनीचा प्रकार / Soil Type</div>
+            <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap">
+              <div style="background:var(--green);color:#fff;border-radius:6px;padding:4px 8px;font-size:9px">काळी माती</div>
+              <div style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:9px">लाल माती</div>
+              <div style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:9px">वालुकामय</div>
+            </div>
+            <div class="btn-primary">पुढे / Next →</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Farm Setup</div>
+    </div>
+
+    <!-- Screen 6: Crop Setup -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar"><div style="font-size:18px">←</div><span class="topbar-title">पीक माहिती / Crop Info</span></div>
+          <div class="scr-pad" style="overflow-y:auto">
+            <div class="steps">
+              <div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div>
+              <span style="font-size:9px;color:var(--muted);margin-left:4px">Step 4 of 4 — Crop</span>
+            </div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:6px">पीक प्रकार / Crop Type</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px">
+              <div style="border:2px solid var(--green);border-radius:8px;padding:8px;text-align:center">
+                <div style="font-size:18px">🌾</div>
+                <div style="font-size:9.5px;font-weight:500">सोयाबीन</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center">
+                <div style="font-size:18px">🌿</div>
+                <div style="font-size:9.5px">कपाशी</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center">
+                <div style="font-size:18px">🌽</div>
+                <div style="font-size:9.5px">मका</div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center">
+                <div style="font-size:18px">🧅</div>
+                <div style="font-size:9.5px">कांदा</div>
+              </div>
+            </div>
+            <input class="inp" placeholder="पेरणी तारीख" value="2025-06-15" type="date" />
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">पिकाचा टप्पा / Crop Stage</div>
+            <div style="background:#F8F8F5;border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:11px;display:flex;justify-content:space-between">
+              <span>वाढ (Vegetative)</span><span>▾</span>
+            </div>
+            <div class="btn-primary" style="margin-top:8px">✓ नोंदणी पूर्ण / Complete</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Crop Registration</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 2: HOME DASHBOARD ── -->
+<div class="section">
+  <div class="section-label">② Home Dashboard</div>
+  <div class="phones">
+
+    <!-- Home Dashboard -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:var(--green);padding:10px 12px 14px;flex-shrink:0">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:10px;color:rgba(255,255,255,.7)">नमस्कार 👋</div>
+                <div style="font-size:13px;font-weight:700;color:#fff">रामचंद्र पाटील</div>
+                <div style="font-size:9px;color:#A5D6A7">📍 पाटील शेती • 3.5 एकर</div>
+              </div>
+              <div style="position:relative">
+                <div style="width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🔔</div>
+                <div style="position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:#FF5252;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;font-weight:700;border:1.5px solid var(--green)">3</div>
+              </div>
+            </div>
+            <!-- Quick weather strip -->
+            <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:7px;margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:20px">⛅</span>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#fff">28°C</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,.8)">आंशिक ढगाळ</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:8px;color:rgba(255,255,255,.7)">आर्द्रता</div>
+                <div style="font-size:11px;font-weight:600;color:#fff">68%</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:8px;color:rgba(255,255,255,.7)">पाऊस</div>
+                <div style="font-size:11px;font-weight:600;color:#FFB300">⚠ 22mm</div>
+              </div>
+            </div>
+          </div>
+          <!-- Quick actions -->
+          <div style="padding:10px;background:#fff;flex-shrink:0">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;background:var(--red-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;font-size:18px">🔬</div>
+                <div style="font-size:7.5px;color:var(--text)">रोग तपासा</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;background:var(--blue-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;font-size:18px">💬</div>
+                <div style="font-size:7.5px;color:var(--text)">AI सल्ला</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;background:var(--amber-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;font-size:18px">📈</div>
+                <div style="font-size:7.5px;color:var(--text)">मंडी भाव</div>
+              </div>
+              <div style="text-align:center">
+                <div style="width:36px;height:36px;background:var(--green-pale);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;font-size:18px">🌤</div>
+                <div style="font-size:7.5px;color:var(--text)">हवामान</div>
+              </div>
+            </div>
+          </div>
+          <!-- Alerts strip -->
+          <div style="margin:8px;background:var(--amber-pale);border:1px solid var(--amber-light);border-radius:8px;padding:8px;flex-shrink:0">
+            <div style="display:flex;gap:6px;align-items:flex-start">
+              <span style="font-size:14px">⚠️</span>
+              <div>
+                <div style="font-size:10px;font-weight:600;color:var(--amber)">हवामान सतर्कता</div>
+                <div class="mr-text" style="font-size:9px;color:#5D4037">पुढील 48 तासांत 22mm पाऊस अपेक्षित — सिंचन थांबवा</div>
+              </div>
+            </div>
+          </div>
+          <!-- Crop card -->
+          <div style="margin:0 8px 8px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:9px;flex-shrink:0">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <div style="font-size:10px;font-weight:600">🌾 सोयाबीन — वाढ टप्पा</div>
+              <div class="chip chip-green">निरोगी</div>
+            </div>
+            <div style="font-size:8px;color:var(--muted);margin-bottom:4px">पेरणीपासून दिवस / Days since sowing</div>
+            <div class="prog-bar"><div class="prog-fill" style="width:45%;background:var(--green)"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--muted)">
+              <span>Day 42</span><span>Day 95 (Harvest)</span>
+            </div>
+          </div>
+          <!-- Bottom nav -->
+          <div class="bnav">
+            <div class="bnav-item active"><span class="icon">🏠</span><span class="lbl">Home</span></div>
+            <div class="bnav-item"><span class="icon">🔬</span><span class="lbl">Disease</span></div>
+            <div class="bnav-item"><span class="icon">💬</span><span class="lbl">Chat</span></div>
+            <div class="bnav-item"><span class="icon">🔔</span><span class="lbl">Alerts</span></div>
+            <div class="bnav-item"><span class="icon">👤</span><span class="lbl">Profile</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Home Dashboard</div>
+    </div>
+
+    <!-- Push Notification overlay -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div style="background:#222;flex:1;display:flex;flex-direction:column;position:relative">
+            <!-- Lock screen -->
+            <div style="text-align:center;padding:30px 14px 20px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start">
+              <div style="font-size:28px;color:#fff;font-weight:300">9:41</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.6)">Thursday, 28 May</div>
+            </div>
+            <!-- Notification cards on lock screen -->
+            <div style="padding:12px;display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+              <!-- High priority disease alert -->
+              <div style="background:rgba(255,255,255,.95);border-radius:12px;padding:10px;border-left:3px solid var(--red)">
+                <div style="display:flex;gap:7px;align-items:flex-start">
+                  <span style="font-size:16px">🌾</span>
+                  <div>
+                    <div style="font-size:9.5px;font-weight:700;color:var(--red)">KrishiMitra — रोग आढळला !</div>
+                    <div class="mr-text" style="font-size:9px;color:#333;margin-top:2px">सोयाबीनमध्ये पानांचा गंज (Leaf Rust) — तीव्रता: जास्त. त्वरीत उपाय करा.</div>
+                    <div style="font-size:8px;color:var(--muted);margin-top:3px">आत्ता • KrishiMitra</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Weather alert -->
+              <div style="background:rgba(255,255,255,.85);border-radius:12px;padding:10px;border-left:3px solid var(--amber)">
+                <div style="display:flex;gap:7px;align-items:flex-start">
+                  <span style="font-size:14px">🌧</span>
+                  <div>
+                    <div style="font-size:9.5px;font-weight:700;color:var(--amber)">KrishiMitra — हवामान सतर्कता</div>
+                    <div class="mr-text" style="font-size:9px;color:#333;margin-top:2px">पाऊस येणार — 22mm अपेक्षित. सिंचन थांबवा.</div>
+                    <div style="font-size:8px;color:var(--muted);margin-top:3px">5 min ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="padding:10px;text-align:center">
+              <div style="width:48px;height:2px;background:rgba(255,255,255,.4);border-radius:1px;margin:0 auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">FCM Push Notifications (Lock Screen)</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 3: DISEASE DETECTION ── -->
+<div class="section">
+  <div class="section-label">③ Disease Detection Flow</div>
+  <div class="phones">
+
+    <!-- Camera / Upload -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar" style="background:#111"><span class="sbar-time" style="color:#fff">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="flex:1;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">
+            <!-- Viewfinder overlay -->
+            <div style="width:160px;height:160px;border:2px solid #fff;border-radius:12px;position:relative;display:flex;align-items:center;justify-content:center">
+              <div style="position:absolute;top:-1px;left:-1px;width:20px;height:20px;border-top:3px solid var(--green-light);border-left:3px solid var(--green-light);border-radius:4px 0 0 0"></div>
+              <div style="position:absolute;top:-1px;right:-1px;width:20px;height:20px;border-top:3px solid var(--green-light);border-right:3px solid var(--green-light);border-radius:0 4px 0 0"></div>
+              <div style="position:absolute;bottom:-1px;left:-1px;width:20px;height:20px;border-bottom:3px solid var(--green-light);border-left:3px solid var(--green-light);border-radius:0 0 0 4px"></div>
+              <div style="position:absolute;bottom:-1px;right:-1px;width:20px;height:20px;border-bottom:3px solid var(--green-light);border-right:3px solid var(--green-light);border-radius:0 0 4px 0"></div>
+              <span style="font-size:32px">🍃</span>
+            </div>
+            <div style="font-size:10px;color:rgba(255,255,255,.7);margin-top:12px;text-align:center">पानाचा फोटो फ्रेममध्ये ठेवा<br/><span style="font-size:8px;color:rgba(255,255,255,.5)">Center the leaf in the frame</span></div>
+          </div>
+          <!-- Bottom controls -->
+          <div style="background:#111;padding:12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+            <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 10px;font-size:8.5px;color:#fff">📁 Gallery</div>
+            <div style="width:50px;height:50px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid var(--green-light)">
+              <div style="width:38px;height:38px;background:var(--green-light);border-radius:50%"></div>
+            </div>
+            <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:5px 10px;font-size:8.5px;color:#fff">⚡ Flash</div>
+          </div>
+          <div style="background:#111;padding:0 12px 10px;flex-shrink:0">
+            <div style="background:#1A1A1A;border-radius:8px;padding:6px;text-align:center">
+              <div style="font-size:8px;color:rgba(255,255,255,.5)">पीक: सोयाबीन | शेत: पाटील शेती</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Camera — Capture Leaf</div>
+    </div>
+
+    <!-- Analysis loading -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar"><div style="font-size:18px">←</div><span class="topbar-title">रोग तपासणी</span></div>
+          <div class="scr" style="align-items:center;justify-content:center;padding:20px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;width:140px">
+              <div style="height:100px;background:linear-gradient(135deg,#C8E6C9,#81C784);display:flex;align-items:center;justify-content:center;font-size:36px">🍃</div>
+              <div style="padding:6px;text-align:center;font-size:8.5px;color:var(--muted)">Uploaded photo</div>
+            </div>
+            <!-- Animated loader -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="display:flex;gap:5px">
+                <div style="width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 1.2s ease-in-out infinite"></div>
+                <div style="width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 1.2s ease-in-out .2s infinite"></div>
+                <div style="width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 1.2s ease-in-out .4s infinite"></div>
+              </div>
+              <div style="font-size:11px;font-weight:500;color:var(--text)">AI विश्लेषण करत आहे...</div>
+              <div style="font-size:9px;color:var(--muted)">Claude Vision analyzing leaf...</div>
+              <div style="width:160px;background:var(--border);border-radius:3px;height:4px;overflow:hidden">
+                <div style="width:65%;height:100%;background:var(--green);border-radius:3px"></div>
+              </div>
+              <div style="font-size:8px;color:var(--muted)">65% — Checking disease patterns</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Analysis Loading</div>
+    </div>
+
+    <!-- Disease Result — HIGH severity -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:var(--red);padding:10px 12px;flex-shrink:0;display:flex;align-items:center;gap:8px">
+            <div style="font-size:18px">←</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#fff">⚠ रोग आढळला!</div>
+              <div style="font-size:8.5px;color:rgba(255,255,255,.8)">Disease Detected</div>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px">
+            <!-- Disease card -->
+            <div style="background:#fff;border:2px solid var(--red);border-radius:10px;padding:10px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:var(--red)">Leaf Rust</div>
+                  <div class="mr-text" style="color:var(--muted);font-size:9px">पानांचा गंज रोग</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:8px;color:var(--muted)">Confidence</div>
+                  <div style="font-size:14px;font-weight:700;color:var(--red)">87%</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px">
+                <div class="chip chip-red">🔴 उच्च तीव्रता</div>
+                <div class="chip chip-red">High Severity</div>
+              </div>
+              <div style="background:var(--red-pale);border-radius:6px;padding:5px 7px;margin-top:6px;font-size:8.5px;color:var(--red)">📳 Push notification sent to your phone</div>
+            </div>
+            <!-- Remedy -->
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px">
+              <div style="font-size:10px;font-weight:600;margin-bottom:6px">💊 उपाय / Remedy</div>
+              <div class="mr-text" style="font-size:9.5px;line-height:1.6;color:var(--text)">
+                1. प्रोपिकोनॅझोल (0.1%) फवारणी करा<br/>
+                2. आठवड्यातून एकदा फवारणी<br/>
+                3. रोगट पाने काढून टाका
+              </div>
+              <div class="divider"></div>
+              <div style="font-size:8.5px;color:var(--muted)">Spray Propiconazole 0.1% — once weekly. Remove infected leaves.</div>
+            </div>
+            <div class="btn-primary" style="background:var(--blue)">💬 AI शी विचारा / Ask AI More</div>
+            <div class="btn-outline">📋 Report सेव्ह करा</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Disease Result — High Severity</div>
+    </div>
+
+    <!-- Disease Result — Healthy -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:var(--green);padding:10px 12px;flex-shrink:0;display:flex;align-items:center;gap:8px">
+            <div style="font-size:18px;color:#fff">←</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#fff">✓ पीक निरोगी आहे</div>
+              <div style="font-size:8.5px;color:rgba(255,255,255,.8)">Crop is Healthy</div>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:center">
+            <div style="width:70px;height:70px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;border:3px solid var(--green-light)">✅</div>
+            <div style="text-align:center">
+              <div style="font-size:12px;font-weight:600;color:var(--green)">No Disease Found</div>
+              <div class="mr-text" style="font-size:9px;color:var(--muted)">कोणताही रोग आढळला नाही</div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;width:100%">
+              <div style="font-size:9px;color:var(--muted);margin-bottom:4px">Confidence</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:92%;background:var(--green)"></div></div>
+              <div style="font-size:10px;font-weight:600;color:var(--green)">92% Confidence</div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;width:100%">
+              <div style="font-size:10px;font-weight:600;margin-bottom:4px">🌿 Preventive Tips</div>
+              <div class="mr-text" style="font-size:9px;line-height:1.6">
+                • नियमित निरीक्षण करा<br/>
+                • शेतात स्वच्छता ठेवा<br/>
+                • योग्य सिंचन करा
+              </div>
+            </div>
+            <div class="btn-outline" style="width:100%">📸 आणखी फोटो / Scan Again</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Disease Result — Healthy</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 4: AI ADVISORY CHAT ── -->
+<div class="section">
+  <div class="section-label">④ AI Advisory Chat Flow</div>
+  <div class="phones">
+
+    <!-- Chat screen -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:var(--green);padding:8px 12px;flex-shrink:0">
+            <div style="display:flex;align-items:center;gap:7px">
+              <div style="font-size:18px;color:#fff">←</div>
+              <div style="width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🤖</div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:#fff">KrishiMitra AI</div>
+                <div style="font-size:8px;color:var(--green-mid);display:flex;align-items:center;gap:3px"><span style="width:5px;height:5px;background:#69F0AE;border-radius:50%;display:inline-block"></span>Online</div>
+              </div>
+              <div style="margin-left:auto;font-size:11px;color:rgba(255,255,255,.7)">मराठी ▾</div>
+            </div>
+            <!-- Context pill -->
+            <div style="background:rgba(255,255,255,.15);border-radius:6px;padding:4px 8px;margin-top:6px;display:inline-flex;gap:4px">
+              <span style="font-size:8px;color:rgba(255,255,255,.9)">🌾 सोयाबीन</span>
+              <span style="font-size:8px;color:rgba(255,255,255,.5)">|</span>
+              <span style="font-size:8px;color:rgba(255,255,255,.9)">📍 पाटील शेती</span>
+              <span style="font-size:8px;color:rgba(255,255,255,.5)">|</span>
+              <span style="font-size:8px;color:rgba(255,255,255,.9)">वाढ टप्पा</span>
+            </div>
+          </div>
+          <!-- Chat messages -->
+          <div style="flex:1;overflow-y:auto;padding:10px;background:#F5F5F0;display:flex;flex-direction:column;gap:0">
+            <!-- AI message -->
+            <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:8px">
+              <div style="width:20px;height:20px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">🤖</div>
+              <div class="bubble-ai">
+                नमस्कार! मी KrishiMitra AI आहे. आज आपल्या शेतासाठी कशी मदत करू?
+                <div class="mr" style="color:var(--muted)">Hello! I'm KrishiMitra AI. How can I help your farm today?</div>
+              </div>
+            </div>
+            <!-- Quick replies -->
+            <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;padding-left:25px">
+              <div style="background:#fff;border:1px solid var(--green);color:var(--green);border-radius:16px;padding:3px 8px;font-size:8px">सिंचन कधी करावे?</div>
+              <div style="background:#fff;border:1px solid var(--green);color:var(--green);border-radius:16px;padding:3px 8px;font-size:8px">खत कोणते?</div>
+            </div>
+            <!-- User message -->
+            <div class="bubble-user">सोयाबीनला किती वेळा पाणी द्यावे? 🌱</div>
+            <!-- AI response -->
+            <div style="display:flex;gap:5px;align-items:flex-end;margin-bottom:8px">
+              <div style="width:20px;height:20px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">🤖</div>
+              <div class="bubble-ai">
+                <div style="font-weight:600;color:var(--green);font-size:9.5px;margin-bottom:3px">💧 सिंचन सल्ला:</div>
+                वाढ टप्प्यात आठवड्यातून 1-2 वेळा पाणी द्यावे. जमिनीतील ओलावा तपासा.
+                <div class="mr" style="margin-top:3px">Water 1–2 times/week during vegetative stage. Check soil moisture first.</div>
+                <div style="margin-top:5px;padding:5px;background:var(--amber-pale);border-radius:5px;font-size:8px;color:var(--amber)">⚠ पुढील 48h पाऊस अपेक्षित — आज सिंचन टाळा</div>
+              </div>
+            </div>
+          </div>
+          <!-- Input bar -->
+          <div style="background:#fff;border-top:1px solid var(--border);padding:7px;display:flex;gap:6px;align-items:center;flex-shrink:0">
+            <div style="flex:1;background:#F5F5F0;border-radius:20px;padding:6px 10px;font-size:10px;color:var(--muted)">शेतीबद्दल विचारा...</div>
+            <div style="width:28px;height:28px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px">🎤</div>
+            <div style="width:28px;height:28px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff">➤</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">AI Advisory Chat</div>
+    </div>
+
+    <!-- Chat with typing indicator -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:var(--green);padding:8px 12px;flex-shrink:0">
+            <div style="display:flex;align-items:center;gap:7px">
+              <div style="font-size:18px;color:#fff">←</div>
+              <div style="width:28px;height:28px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">🤖</div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:#fff">KrishiMitra AI</div>
+                <div style="font-size:8px;color:#A5D6A7">टाइप करत आहे... / Typing...</div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px;background:#F5F5F0;display:flex;flex-direction:column">
+            <div class="bubble-user">खतांबद्दल सांगा</div>
+            <div class="bubble-user" style="margin-top:4px">मला NPK कधी द्यावे?</div>
+            <!-- Typing bubble -->
+            <div style="display:flex;gap:5px;align-items:flex-end;margin-top:8px">
+              <div style="width:20px;height:20px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">🤖</div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:12px 12px 12px 4px;padding:8px 12px;display:flex;gap:4px;align-items:center">
+                <div style="width:6px;height:6px;background:var(--muted);border-radius:50%"></div>
+                <div style="width:6px;height:6px;background:var(--muted);border-radius:50%"></div>
+                <div style="width:6px;height:6px;background:var(--muted);border-radius:50%"></div>
+              </div>
+            </div>
+            <div style="margin-top:8px">
+              <div style="font-size:8px;color:var(--muted);text-align:center">AI सल्ला तयार होत आहे...</div>
+            </div>
+          </div>
+          <div style="background:#fff;border-top:1px solid var(--border);padding:7px;display:flex;gap:6px;align-items:center;flex-shrink:0">
+            <div style="flex:1;background:#F5F5F0;border-radius:20px;padding:6px 10px;font-size:10px;color:var(--text)">NPK कधी द्यावे?</div>
+            <div style="width:28px;height:28px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff">➤</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Chat — AI Typing</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 5: WEATHER ── -->
+<div class="section">
+  <div class="section-label">⑤ Weather Alert Flow</div>
+  <div class="phones">
+
+    <!-- Weather screen -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:linear-gradient(180deg,#1565C0 0%,#1976D2 100%);padding:12px;flex-shrink:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+              <div style="font-size:18px;color:#fff">←</div>
+              <span style="font-size:12px;font-weight:600;color:#fff">हवामान / Weather</span>
+            </div>
+            <!-- Main weather -->
+            <div style="text-align:center;padding:8px 0">
+              <div style="font-size:40px">🌧</div>
+              <div style="font-size:32px;font-weight:300;color:#fff">28°C</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.8)">पावसाळी / Rainy</div>
+              <div style="font-size:9px;color:rgba(255,255,255,.6)">📍 पाटील शेती, पुणे</div>
+            </div>
+            <!-- Stats row -->
+            <div style="display:flex;justify-content:space-around;background:rgba(255,255,255,.15);border-radius:10px;padding:8px;margin-top:6px">
+              <div style="text-align:center"><div style="font-size:8px;color:rgba(255,255,255,.7)">आर्द्रता</div><div style="font-size:11px;font-weight:600;color:#fff">68%</div></div>
+              <div style="text-align:center"><div style="font-size:8px;color:rgba(255,255,255,.7)">वारा</div><div style="font-size:11px;font-weight:600;color:#fff">12 km/h</div></div>
+              <div style="text-align:center"><div style="font-size:8px;color:rgba(255,255,255,.7)">पाऊस</div><div style="font-size:11px;font-weight:600;color:#FFB300">22mm</div></div>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px">
+            <!-- Alert card -->
+            <div style="background:var(--amber-pale);border:1.5px solid var(--amber-light);border-radius:10px;padding:9px;margin-bottom:8px">
+              <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:4px">⚠ AI सतर्कता / AI Alert</div>
+              <div class="mr-text" style="font-size:9.5px;line-height:1.6">
+                पुढील 48 तासांत 22mm पाऊस अपेक्षित. आज आणि उद्या सिंचन टाळा. पिकाची काढणी पुढे ढकला.
+              </div>
+              <div style="font-size:8.5px;color:var(--muted);margin-top:3px">Heavy rain expected — skip irrigation. Delay harvest.</div>
+            </div>
+            <!-- 4-day forecast -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px">4-दिवसीय अंदाज</div>
+            <div class="w-row">
+              <div class="w-card">
+                <div style="font-size:8.5px;color:var(--muted)">आज</div>
+                <div style="font-size:18px">🌧</div>
+                <div style="font-size:10px;font-weight:600">28°</div>
+                <div style="font-size:8px;color:var(--blue)">22mm</div>
+              </div>
+              <div class="w-card">
+                <div style="font-size:8.5px;color:var(--muted)">उद्या</div>
+                <div style="font-size:18px">🌦</div>
+                <div style="font-size:10px;font-weight:600">26°</div>
+                <div style="font-size:8px;color:var(--blue)">8mm</div>
+              </div>
+              <div class="w-card">
+                <div style="font-size:8.5px;color:var(--muted)">परवा</div>
+                <div style="font-size:18px">⛅</div>
+                <div style="font-size:10px;font-weight:600">30°</div>
+                <div style="font-size:8px;color:var(--green)">2mm</div>
+              </div>
+              <div class="w-card">
+                <div style="font-size:8.5px;color:var(--muted)">गुरु</div>
+                <div style="font-size:18px">☀️</div>
+                <div style="font-size:10px;font-weight:600">33°</div>
+                <div style="font-size:8px;color:var(--green)">0mm</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Weather Alert Screen</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 6: MANDI PRICES ── -->
+<div class="section">
+  <div class="section-label">⑥ Mandi Price Flow</div>
+  <div class="phones">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar"><div style="font-size:18px">←</div><span class="topbar-title">📈 मंडी भाव</span></div>
+          <div style="flex:1;overflow-y:auto;padding:10px">
+            <!-- Filter row -->
+            <div style="display:flex;gap:6px;margin-bottom:8px">
+              <div style="background:var(--green);color:#fff;border-radius:6px;padding:4px 10px;font-size:9px;font-weight:500">सोयाबीन ✓</div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:9px">महाराष्ट्र ▾</div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:9px">आज</div>
+            </div>
+            <!-- Price highlight -->
+            <div style="background:var(--green);border-radius:12px;padding:12px;margin-bottom:8px;text-align:center">
+              <div style="font-size:9px;color:rgba(255,255,255,.7)">सध्याचा भाव / Current Price</div>
+              <div style="font-size:26px;font-weight:700;color:#fff">₹4,850</div>
+              <div style="font-size:8.5px;color:#A5D6A7">प्रति क्विंटल / per quintal</div>
+              <div style="margin-top:6px;display:inline-flex;background:rgba(255,255,255,.15);border-radius:6px;padding:3px 8px;gap:4px;align-items:center">
+                <span style="font-size:9px;color:#69F0AE">↑ +₹120 (2.5%)</span>
+                <span style="font-size:8px;color:rgba(255,255,255,.6)">vs yesterday</span>
+              </div>
+            </div>
+            <!-- Mandi table -->
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px">
+              <div style="font-size:10px;font-weight:600;margin-bottom:6px">मंडी-निहाय भाव</div>
+              <div class="mandi-row">
+                <div><div style="font-size:10px;font-weight:500">पुणे मंडी</div><div style="font-size:8px;color:var(--muted)">APMC Pune</div></div>
+                <div style="text-align:right"><div style="font-size:11px;font-weight:700;color:var(--green)">₹4,850</div><div class="chip chip-green" style="font-size:7.5px">↑ Best</div></div>
+              </div>
+              <div class="mandi-row">
+                <div><div style="font-size:10px;font-weight:500">नाशिक मंडी</div><div style="font-size:8px;color:var(--muted)">APMC Nashik</div></div>
+                <div style="text-align:right"><div style="font-size:11px;font-weight:700">₹4,720</div></div>
+              </div>
+              <div class="mandi-row">
+                <div><div style="font-size:10px;font-weight:500">औरंगाबाद</div><div style="font-size:8px;color:var(--muted)">APMC Aurangabad</div></div>
+                <div style="text-align:right"><div style="font-size:11px;font-weight:700">₹4,680</div></div>
+              </div>
+            </div>
+            <!-- AI advice -->
+            <div style="background:var(--blue-pale);border:1px solid #90CAF9;border-radius:10px;padding:9px">
+              <div style="font-size:10px;font-weight:600;color:var(--blue);margin-bottom:4px">🤖 AI विक्री सल्ला</div>
+              <div class="mr-text" style="font-size:9.5px;line-height:1.6">पुढील आठवड्यात भाव ₹5,000+ जाण्याची शक्यता. थोडी प्रतीक्षा करा.</div>
+              <div style="font-size:8px;color:var(--muted);margin-top:3px">Prices likely to rise to ₹5,000+ next week. Consider waiting.</div>
+              <div style="margin-top:6px;text-align:right"><div class="chip chip-blue">Best time to sell: Next week →</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Mandi Prices</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 7: NOTIFICATIONS ── -->
+<div class="section">
+  <div class="section-label">⑦ Notifications & Advisory Flow</div>
+  <div class="phones">
+
+    <!-- Notifications list -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar">
+            <span class="topbar-title">🔔 सूचना / Notifications</span>
+            <div style="background:rgba(255,255,255,.2);border-radius:12px;padding:2px 7px;font-size:9px;color:#fff;font-weight:600">3 नवीन</div>
+          </div>
+          <!-- Filter tabs -->
+          <div style="background:#fff;display:flex;border-bottom:1px solid var(--border);flex-shrink:0">
+            <div style="flex:1;text-align:center;padding:6px;font-size:9px;font-weight:600;color:var(--green);border-bottom:2px solid var(--green)">सर्व (5)</div>
+            <div style="flex:1;text-align:center;padding:6px;font-size:9px;color:var(--muted)">रोग (1)</div>
+            <div style="flex:1;text-align:center;padding:6px;font-size:9px;color:var(--muted)">हवामान (2)</div>
+            <div style="flex:1;text-align:center;padding:6px;font-size:9px;color:var(--muted)">सल्ला (2)</div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px">
+            <!-- Unread HIGH disease -->
+            <div style="background:#fff;border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:9px;margin-bottom:7px">
+              <div class="notif-item" style="border:none;padding:0">
+                <div class="notif-dot" style="background:var(--red)"></div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                    <div style="font-size:10px;font-weight:600;color:var(--red)">⚠ रोग आढळला</div>
+                    <div style="font-size:7.5px;color:var(--muted)">5 min ago</div>
+                  </div>
+                  <div class="mr-text" style="font-size:9px;color:var(--text);margin-top:2px">सोयाबीन — Leaf Rust (87% conf.) — तीव्रता: जास्त</div>
+                  <div class="chip chip-red" style="margin-top:4px;font-size:7.5px">HIGH PRIORITY</div>
+                </div>
+              </div>
+            </div>
+            <!-- Unread weather -->
+            <div style="background:#fff;border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:0 10px 10px 0;padding:9px;margin-bottom:7px">
+              <div class="notif-item" style="border:none;padding:0">
+                <div class="notif-dot" style="background:var(--amber)"></div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between">
+                    <div style="font-size:10px;font-weight:600;color:var(--amber)">🌧 हवामान सतर्कता</div>
+                    <div style="font-size:7.5px;color:var(--muted)">10 min ago</div>
+                  </div>
+                  <div class="mr-text" style="font-size:9px;color:var(--text);margin-top:2px">पाऊस येणार — 22mm • सिंचन थांबवा</div>
+                  <div class="chip chip-amber" style="margin-top:4px;font-size:7.5px">HIGH PRIORITY</div>
+                </div>
+              </div>
+            </div>
+            <!-- Read advisory -->
+            <div style="background:#FAFAFA;border:1px solid var(--border);border-radius:10px;padding:9px;margin-bottom:7px;opacity:.8">
+              <div class="notif-item" style="border:none;padding:0">
+                <div class="notif-dot" style="background:var(--border)"></div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between">
+                    <div style="font-size:10px;font-weight:500;color:var(--muted)">💬 AI सल्ला — खत</div>
+                    <div style="font-size:7.5px;color:var(--muted)">2h ago</div>
+                  </div>
+                  <div style="font-size:9px;color:var(--muted);margin-top:2px">NPK 20-20-0 या आठवड्यात द्या</div>
+                  <div style="font-size:7.5px;color:var(--muted);margin-top:2px">✓ वाचले</div>
+                </div>
+              </div>
+            </div>
+            <!-- Mandi advisory -->
+            <div style="background:#fff;border:1px solid var(--border);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:9px;margin-bottom:7px">
+              <div class="notif-item" style="border:none;padding:0">
+                <div class="notif-dot" style="background:var(--green)"></div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between">
+                    <div style="font-size:10px;font-weight:600;color:var(--green)">📈 मंडी सल्ला</div>
+                    <div style="font-size:7.5px;color:var(--muted)">3h ago</div>
+                  </div>
+                  <div class="mr-text" style="font-size:9px;color:var(--text);margin-top:2px">सोयाबीन भाव ↑10% — विक्रीची संधी</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Notifications List</div>
+    </div>
+
+    <!-- Advisory detail -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div class="topbar"><div style="font-size:18px">←</div><span class="topbar-title">सूचना तपशील</span></div>
+          <div style="flex:1;overflow-y:auto;padding:10px">
+            <div style="background:var(--red-pale);border-radius:10px;padding:12px;margin-bottom:8px;text-align:center">
+              <div style="font-size:28px;margin-bottom:4px">⚠️</div>
+              <div style="font-size:13px;font-weight:700;color:var(--red)">रोग सतर्कता</div>
+              <div style="font-size:8.5px;color:var(--muted);margin-top:2px">Disease Alert • 5 May 2026</div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px">
+              <div style="font-size:10px;font-weight:600;margin-bottom:6px">तपशील / Details</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;justify-content:space-between"><span style="font-size:9px;color:var(--muted)">रोग / Disease</span><span style="font-size:9px;font-weight:600">Leaf Rust</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="font-size:9px;color:var(--muted)">विश्वास / Confidence</span><span style="font-size:9px;font-weight:600;color:var(--red)">87%</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="font-size:9px;color:var(--muted)">तीव्रता / Severity</span><span class="chip chip-red">High</span></div>
+                <div style="display:flex;justify-content:space-between"><span style="font-size:9px;color:var(--muted)">पीक / Crop</span><span style="font-size:9px;font-weight:600">सोयाबीन</span></div>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px">
+              <div style="font-size:10px;font-weight:600;margin-bottom:5px">💊 उपाय / Remedy</div>
+              <div class="mr-text" style="font-size:9.5px;line-height:1.7;color:var(--text)">
+                प्रोपिकोनॅझोल (0.1%) ची फवारणी करा. आठवड्यातून एकदा फवारणी द्या. रोगट पाने त्वरीत काढून टाका.
+              </div>
+            </div>
+            <div class="btn-primary" style="background:var(--blue)">💬 AI ला विचारा / Ask AI</div>
+            <div class="btn-outline" style="margin-top:6px">✓ वाचले / Mark as Read</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Advisory Detail</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FLOW 8: PROFILE & SETTINGS ── -->
+<div class="section">
+  <div class="section-label">⑧ Profile & Settings</div>
+  <div class="phones">
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="sbar"><span class="sbar-time">9:41</span><div class="sbar-icons"><span>●●●</span><span>▊</span></div></div>
+          <div style="background:var(--green);padding:14px 12px;flex-shrink:0;text-align:center">
+            <div style="width:52px;height:52px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 6px;border:3px solid rgba(255,255,255,.5)">👨‍🌾</div>
+            <div style="font-size:13px;font-weight:700;color:#fff">रामचंद्र पाटील</div>
+            <div style="font-size:9px;color:#A5D6A7">+91 98765 43210</div>
+            <div style="font-size:9px;color:#A5D6A7;margin-top:2px">📍 पुणे, महाराष्ट्र</div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:10px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px">
+              <div style="padding:9px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:10px">🌾 माझी शेती / My Farm</div>
+                <span style="font-size:9px;color:var(--green)">पाहा →</span>
+              </div>
+              <div style="padding:9px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:10px">🌿 माझे पीक / My Crop</div>
+                <span style="font-size:9px;color:var(--green)">पाहा →</span>
+              </div>
+              <div style="padding:9px 12px;display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:10px">📋 रोग इतिहास / Disease History</div>
+                <span style="font-size:9px;color:var(--green)">3 records →</span>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px">
+              <div style="padding:9px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:10px">🌐 भाषा / Language</div>
+                <span style="font-size:9px;color:var(--muted)">मराठी ›</span>
+              </div>
+              <div style="padding:9px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:10px">🔔 सूचना / Notifications</div>
+                <div style="width:28px;height:16px;background:var(--green);border-radius:8px;position:relative"><div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px"></div></div>
+              </div>
+              <div style="padding:9px 12px;display:flex;justify-content:space-between;align-items:center">
+                <div style="font-size:10px">📱 App Version</div>
+                <span style="font-size:9px;color:var(--muted)">v1.0.0</span>
+              </div>
+            </div>
+            <div style="background:var(--red-pale);border:1px solid #FFCDD2;border-radius:10px;padding:10px;text-align:center">
+              <div style="font-size:10px;color:var(--red);font-weight:500">बाहेर पडा / Logout</div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bnav-item"><span class="icon">🏠</span><span class="lbl">Home</span></div>
+            <div class="bnav-item"><span class="icon">🔬</span><span class="lbl">Disease</span></div>
+            <div class="bnav-item"><span class="icon">💬</span><span class="lbl">Chat</span></div>
+            <div class="bnav-item"><span class="icon">🔔</span><span class="lbl">Alerts</span></div>
+            <div class="bnav-item active"><span class="icon">👤</span><span class="lbl">Profile</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Profile & Settings</div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.3);opacity:1}}
+</style>

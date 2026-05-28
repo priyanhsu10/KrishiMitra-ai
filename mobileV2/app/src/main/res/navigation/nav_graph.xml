@@ -109,6 +109,19 @@
         <action
             android:id="@+id/action_HomeFragment_to_CropRegistrationFragment"
             app:destination="@id/CropRegistrationFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_CropTrackingFragment"
+            app:destination="@id/CropTrackingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CropTrackingFragment"
+        android:name="com.krishimitra.mobilev2.CropTrackingFragment"
+        android:label="Crop Tracking"
+        tools:layout="@layout/fragment_crop_tracking">
+        <action
+            android:id="@+id/action_CropTrackingFragment_to_CropRegistrationFragment"
+            app:destination="@id/CropRegistrationFragment" />
     </fragment>
 
     <fragment

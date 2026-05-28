@@ -68,6 +68,8 @@ public class DiseaseService {
         response.put("disease_mr", aiResult.get("disease_mr"));
         response.put("confidence", aiResult.get("confidence"));
         response.put("severity", aiResult.get("severity"));
+        response.put("cause_en", aiResult.get("cause_en"));
+        response.put("cause_mr", aiResult.get("cause_mr"));
         response.put("remedy_en", aiResult.get("remedy_en"));
         response.put("remedy_mr", aiResult.get("remedy_mr"));
         response.put("notification_sent", notificationSent);

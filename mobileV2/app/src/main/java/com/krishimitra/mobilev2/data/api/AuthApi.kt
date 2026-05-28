@@ -1,5 +1,6 @@
 package com.krishimitra.mobilev2.data.api
 
+import com.google.gson.annotations.SerializedName
 import com.krishimitra.mobilev2.data.model.FarmerResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -40,6 +41,7 @@ data class LoginResponse(val otp_sent: Boolean)
 data class VerifyRequest(val mobile: String, val otp: String)
 data class VerifyResponse(
     val token: String,
+    @SerializedName("farmer_id", alternate = ["id"])
     val farmer_id: String,
     val is_new_user: Boolean
 )

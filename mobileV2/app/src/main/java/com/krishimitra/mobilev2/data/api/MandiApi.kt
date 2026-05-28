@@ -12,7 +12,7 @@ interface MandiApi {
     
     /**
      * Get mandi price information for a crop.
-     * GET /api/v1/mandi?crop={crop}&state={state}
+     * GET /api/v1/mandi/prices?crop={crop}&state={state}
      */
     @GET("mandi/prices")
     fun getMandiPrices(
@@ -26,13 +26,12 @@ data class MandiResponse(
     val crop: String,
     val prices: List<MandiPrice>,
     val advice_mr: String,
+    val advice_en: String,
     val best_time_to_sell: String
 )
 
 data class MandiPrice(
-    val district: String,
-    val market: String,
-    val min_price: Double,
-    val max_price: Double,
-    val average_price: Double
+    val mandi: String,
+    val price_per_quintal: Double,
+    val trend: String
 )

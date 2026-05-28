@@ -131,3 +131,21 @@ All files are production-ready with:
 ✅ Database migrations
 ✅ Firebase FCM integration
 ✅ AI integration (Claude Vision + LLM)
+
+
+
+2 bolenge 
+2 demo denge 
+
+1. story 
+ 
+2. how we are helping with ai 
+3. what feature  we providing with app 
+   1. crop tracking 
+   2. crop disease ditection using ai 
+   3. weather advisory before calamaties happen and provide the suggesion so they take appropriate action.
+   4. Ai advisory chat asistance
+
+4. Demo 
+   
+77

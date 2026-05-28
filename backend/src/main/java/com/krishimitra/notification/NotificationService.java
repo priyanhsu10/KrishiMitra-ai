@@ -49,35 +49,54 @@ public class NotificationService {
         // Step 2: FCM push — best effort, never fail the whole request
         boolean fcmSent = false;
         try {
-            String fcmToken = farmerRepository.findById(req.getFarmerId())
-                .map(Farmer::getFcmToken)
-                .orElse(null);
+            Farmer farmer = farmerRepository.findById(req.getFarmerId()).orElse(null);
+            if (farmer == null) {
+                log.warn("Farmer NOT FOUND in database for ID: {}", req.getFarmerId());
+                return NotifyResponse.builder().advisoryId(advisory.getId()).saved(true).fcmSent(false).build();
+            }
 
-            if (fcmToken != null && !fcmToken.isBlank() && firebaseMessaging.isPresent()) {
+            String fcmToken = farmer.getFcmToken();
+            boolean hasToken = fcmToken != null && !fcmToken.isBlank();
+            boolean hasFirebase = firebaseMessaging.isPresent();
+
+            if (hasToken && hasFirebase) {
+                String language = farmer.getLanguage() != null ? farmer.getLanguage() : "marathi";
+                String body = req.getMessageMr(); // default
+                if ("english".equalsIgnoreCase(language)) {
+                    body = req.getMessageEn();
+                } else if ("hindi".equalsIgnoreCase(language) && req.getMessageHi() != null) {
+                    body = req.getMessageHi();
+                }
+
                 Message message = Message.builder()
                     .setToken(fcmToken)
                     .setNotification(Notification.builder()
-                        .setTitle("🌾 KrishiMitra — " + alertTypeLabel(req.getAlertType()))
-                        .setBody(req.getMessageMr())   // always Marathi for push
+                        .setTitle("🌾 KrishiMitra — " + alertTypeLabel(req.getAlertType(), language))
+                        .setBody(body)
                         .build())
                     .putData("alert_type", req.getAlertType())
                     .putData("priority", req.getPriority())
                     .putData("advisory_id", advisory.getId().toString())
                     .setAndroidConfig(AndroidConfig.builder()
-                        .setPriority(req.getPriority().equals("high")
+                        .setPriority(req.getPriority().equalsIgnoreCase("high")
                             ? AndroidConfig.Priority.HIGH
                             : AndroidConfig.Priority.NORMAL)
                         .build())
                     .build();
 
                 String response = firebaseMessaging.get().send(message);
-                log.info("FCM push sent successfully: messageId={}", response);
+                log.info("FCM push sent successfully for farmer {}: messageId={}", req.getFarmerId(), response);
                 
                 fcmSent = true;
                 advisory.setFcmSent(true);
                 advisoryRepository.save(advisory);
             } else {
-                log.warn("No FCM token for farmer {} or Firebase not initialized", req.getFarmerId());
+                if (!hasToken) {
+                    log.warn("FCM Token is missing/blank for farmer: {}", req.getFarmerId());
+                }
+                if (!hasFirebase) {
+                    log.error("Firebase Messaging is NOT INITIALIZED. Check backend logs for startup errors.");
+                }
             }
         } catch (Exception e) {
             // Don't throw — advisory is saved, in-app polling will catch it
@@ -91,14 +110,15 @@ public class NotificationService {
             .build();
     }
 
-    private String alertTypeLabel(String alertType) {
+    private String alertTypeLabel(String alertType, String language) {
+        boolean isEnglish = "english".equalsIgnoreCase(language);
         return switch (alertType) {
-            case "weather"    -> "हवामान सूचना";
-            case "disease"    -> "रोग सूचना";
-            case "irrigation" -> "सिंचन वेळ";
-            case "fertilizer" -> "खत सल्ला";
-            case "market"     -> "बाजार भाव";
-            default           -> "सल्ला";
+            case "weather"    -> isEnglish ? "Weather Alert" : "हवामान सूचना";
+            case "disease"    -> isEnglish ? "Disease Alert" : "रोग सूचना";
+            case "irrigation" -> isEnglish ? "Irrigation Time" : "सिंचन वेळ";
+            case "fertilizer" -> isEnglish ? "Fertilizer Advice" : "खत सल्ला";
+            case "market"     -> isEnglish ? "Market Price" : "बाजार भाव";
+            default           -> isEnglish ? "Advisory" : "सल्ला";
         };
     }
 }

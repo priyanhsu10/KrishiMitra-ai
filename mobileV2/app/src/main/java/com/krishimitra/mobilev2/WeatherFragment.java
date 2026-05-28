@@ -48,17 +48,23 @@ public class WeatherFragment extends Fragment {
             return;
         }
 
-        RetrofitClient.INSTANCE.getWeatherApi().getWeather(farmerId, null).enqueue(new Callback<WeatherResponse>() {
+        String language = sessionManager.getLanguage();
+
+        RetrofitClient.INSTANCE.getWeatherApi().getWeather(farmerId, null, language).enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
                 binding.progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     WeatherResponse weather = response.body();
                     binding.tvTemp.setText(String.format("%.1f°C", weather.getTemperature()));
-                    binding.tvSummary.setText(weather.getWeather_summary() != null ? weather.getWeather_summary() : weather.getDescription());
                     
-                    String language = sessionManager.getLanguage();
-                    String advice = "marathi".equalsIgnoreCase(language) ? weather.getAdvice_mr() : weather.getAdvice_en();
+                    String summary = weather.getWeather_summary();
+                    String advice = weather.getAdvice();
+                    if (advice == null || advice.isEmpty()) {
+                        advice = "mr".equalsIgnoreCase(language) ? weather.getAdvice_mr() : weather.getAdvice_en();
+                    }
+                    
+                    binding.tvSummary.setText(summary);
                     binding.tvAdvice.setText(advice);
                 } else {
                     binding.tvSummary.setText("Failed to load weather data");

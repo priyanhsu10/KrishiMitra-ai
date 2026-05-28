@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // Top-level destinations where the burger icon should be shown instead of back arrow
         Set<Integer> topLevelDestinations = new HashSet<>();
         topLevelDestinations.add(R.id.HomeFragment);
+        topLevelDestinations.add(R.id.CropTrackingFragment);
         topLevelDestinations.add(R.id.LanguageFragment);
         topLevelDestinations.add(R.id.LoginFragment);
 
@@ -92,8 +93,42 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 binding.toolbar.setVisibility(View.VISIBLE);
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                // Try updating FCM token whenever we are in a main screen
+                updateFcmToken();
             }
         });
+    }
+
+    private void updateFcmToken() {
+        String farmerId = sessionManager.getFarmerId();
+        if (farmerId == null) return;
+
+        com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken()
+            .addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    android.util.Log.w("MainActivity", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+
+                String token = task.getResult();
+                java.util.Map<String, String> body = new java.util.HashMap<>();
+                body.put("fcm_token", token);
+
+                com.krishimitra.mobilev2.data.RetrofitClient.INSTANCE.getFarmerApi().updateFcmToken(farmerId, body)
+                    .enqueue(new retrofit2.Callback<Void>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                android.util.Log.d("MainActivity", "FCM token updated successfully");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+                            android.util.Log.e("MainActivity", "FCM token update failed", t);
+                        }
+                    });
+            });
     }
 
     @Override

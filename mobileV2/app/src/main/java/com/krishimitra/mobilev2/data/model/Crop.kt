@@ -1,5 +1,7 @@
 package com.krishimitra.mobilev2.data.model
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Crop entity — represents a crop planted on a farm.
  */
@@ -15,6 +17,7 @@ data class Crop(
  * Crop API response
  */
 data class CropResponse(
+    @SerializedName("id")
     val crop_id: String,
     val farm_id: String,
     val crop_type: String,

@@ -49,6 +49,12 @@ interface FarmerApi {
      */
     @GET("crops")
     fun getCrops(@Query("farm_id") farmId: String): Call<CropListResponse>
+
+    /**
+     * Update FCM token for push notifications.
+     */
+    @PATCH("farmers/{id}/fcm-token")
+    fun updateFcmToken(@Path("id") id: String, @Body body: Map<String, String>): Call<Void>
 }
 
 // Response Wrapper DTOs

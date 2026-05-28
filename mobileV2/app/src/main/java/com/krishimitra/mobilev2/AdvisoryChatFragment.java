@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class AdvisoryChatFragment extends Fragment {
     private FragmentAdvisoryChatBinding binding;
     private SessionManager sessionManager;
     private StringBuilder chatHistory = new StringBuilder();
+    private String[] cropOptions = {"Soybean", "Cotton", "Rice", "Wheat", "Sugarcane", "Onion", "Other"};
 
     @Nullable
     @Override
@@ -38,10 +40,32 @@ public class AdvisoryChatFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(requireContext());
 
+        setupCropDropdown();
+
         binding.btnSend.setOnClickListener(v -> {
             String question = binding.etQuestion.getText().toString();
             if (!question.isEmpty()) {
                 sendMessage(question);
+            }
+        });
+    }
+
+    private void setupCropDropdown() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_dropdown_item_1line, cropOptions);
+        binding.autoCropType.setAdapter(adapter);
+
+        String sessionCrop = sessionManager.getCropType();
+        if (sessionCrop != null) {
+            binding.autoCropType.setText(sessionCrop, false);
+        }
+
+        binding.autoCropType.setOnItemClickListener((parent, view, position, id) -> {
+            String selected = cropOptions[position];
+            if ("Other".equals(selected)) {
+                binding.etOtherCrop.setVisibility(View.VISIBLE);
+            } else {
+                binding.etOtherCrop.setVisibility(View.GONE);
             }
         });
     }
@@ -57,12 +81,18 @@ public class AdvisoryChatFragment extends Fragment {
         String farmerId = sessionManager.getFarmerId();
         String language = sessionManager.getLanguage();
         
-        // Defaulting crop and stage for now, should ideally be fetched from session/last selected
+        String selectedCropType = binding.autoCropType.getText().toString();
+        if ("Other".equals(selectedCropType)) {
+            selectedCropType = binding.etOtherCrop.getText().toString();
+        }
+        if (selectedCropType.isEmpty()) selectedCropType = "Soybean";
+        
+        // Defaulting stage for now
         AdvisoryChatRequest request = new AdvisoryChatRequest(
                 farmerId != null ? farmerId : "",
-                "Soybean", 
-                "Vegetative",
-                language != null ? language : "en",
+                selectedCropType,
+                "Vegetative Growth",
+                language != null ? language : "mr",
                 question
         );
 
@@ -75,7 +105,7 @@ public class AdvisoryChatFragment extends Fragment {
                     AdvisoryChatResponse advisory = response.body();
                     String answer = advisory.getAdvice();
                     if (answer == null || answer.isEmpty()) {
-                        answer = "marathi".equalsIgnoreCase(language) ? advisory.getAdvice_mr() : advisory.getAdvice_en();
+                        answer = "mr".equalsIgnoreCase(language) ? advisory.getAdvice_mr() : advisory.getAdvice_en();
                     }
                     chatHistory.append("AI: ").append(answer).append("\n\n");
                     binding.tvChatHistory.setText(chatHistory.toString());

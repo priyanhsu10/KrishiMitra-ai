@@ -23,8 +23,9 @@ interface DiseaseApi {
     @POST("disease/detect")
     fun detectDisease(
         @Part("farmer_id") farmer_id: RequestBody,
-        @Part("crop_id") crop_id: RequestBody,
+        @Part("crop_id") crop_id: RequestBody?,
         @Part("crop_type") crop_type: RequestBody,
+        @Part("language") language: RequestBody,
         @Part file: MultipartBody.Part
     ): Call<DiseaseDetectionResponse>
 }

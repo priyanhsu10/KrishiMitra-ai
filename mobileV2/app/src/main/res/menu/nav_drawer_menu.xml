@@ -10,6 +10,10 @@
             android:icon="@android:drawable/ic_menu_camera"
             android:title="Disease Detection (रोग तपासणी)" />
         <item
+            android:id="@+id/CropTrackingFragment"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Crop Tracking (पीक ट्रॅकिंग)" />
+        <item
             android:id="@+id/MandiFragment"
             android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="Mandi Prices (बाजार भाव)" />

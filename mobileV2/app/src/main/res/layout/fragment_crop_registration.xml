@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/green_primary"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/btn_back"
@@ -19,88 +19,89 @@
             android:layout_height="wrap_content"
             android:text="←"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="28sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="20dp"
             android:text="पीक माहिती / Crop Info"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <View
-                    android:layout_width="20dp"
-                    android:layout_height="4dp"
+                    android:layout_width="25dp"
+                    android:layout_height="6dp"
                     android:background="@color/green_primary" />
 
                 <View
-                    android:layout_width="20dp"
-                    android:layout_height="4dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_width="25dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="6dp"
                     android:background="@color/green_primary" />
 
                 <View
-                    android:layout_width="20dp"
-                    android:layout_height="4dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_width="25dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="6dp"
                     android:background="@color/green_primary" />
 
                 <View
-                    android:layout_width="20dp"
-                    android:layout_height="4dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_width="25dp"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="6dp"
                     android:background="@color/amber" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:text="Step 4 of 4 — Crop"
                     android:textColor="@color/muted_color"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:text="पीक प्रकार / Crop Type"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:columnCount="2">
+                android:layout_marginBottom="20dp"
+                android:columnCount="3">
 
                 <LinearLayout
                     android:id="@+id/option_soybean"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:background="@drawable/bg_lang_option_selected"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -111,16 +112,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🌾"
-                        android:textSize="24sp" />
+                        android:text="🌱"
+                        android:textSize="32sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="सोयाबीन"
-                        android:textColor="@color/black"
-                        android:textSize="11sp"
+                        android:text="सोयाबीन\nSoybean"
+                        android:gravity="center"
+                        android:textColor="@color/green_primary"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -129,7 +131,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:background="@drawable/bg_lang_option"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -140,16 +142,133 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🌿"
-                        android:textSize="24sp" />
+                        android:text="☁️"
+                        android:textSize="32sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="कपाशी"
-                        android:textColor="@color/black"
-                        android:textSize="11sp" />
+                        android:text="कपाशी\nCotton"
+                        android:gravity="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/option_rice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_lang_option"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🌾"
+                        android:textSize="32sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="भात\nRice"
+                        android:gravity="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/option_wheat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_lang_option"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🥖"
+                        android:textSize="32sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="गहू\nWheat"
+                        android:gravity="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/option_sugarcane"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_lang_option"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🎋"
+                        android:textSize="32sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="ऊस\nSugarcane"
+                        android:gravity="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/option_onion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/bg_lang_option"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🧅"
+                        android:textSize="32sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="कांदा\nOnion"
+                        android:gravity="center"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </GridLayout>
 
@@ -157,68 +276,67 @@
                 android:id="@+id/et_crop_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_lang_option"
                 android:hint="Selected Crop"
                 android:inputType="text"
-                android:padding="14dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:padding="16dp"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/et_sowing_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/bg_lang_option"
                 android:hint="पेरणी तारीख / Sowing Date (YYYY-MM-DD)"
-                android:inputType="date"
-                android:padding="14dp"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:padding="16dp"
+                android:textColor="@color/text_color"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:text="पिकाचा टप्पा / Crop Stage"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="28dp"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
                 app:hintEnabled="false">
 
                 <AutoCompleteTextView
                     android:id="@+id/auto_crop_stage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_lang_option"
                     android:hint="Select Crop Stage"
                     android:inputType="none"
-                    android:padding="14dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:padding="16dp"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_save_crop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:backgroundTint="@color/green_primary"
-                android:padding="14dp"
+                android:padding="16dp"
                 android:text="✓ नोंदणी पूर्ण / Complete"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <ProgressBar
@@ -226,7 +344,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

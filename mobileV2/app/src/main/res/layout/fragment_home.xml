@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/green_primary"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -39,7 +41,7 @@
                             android:layout_height="wrap_content"
                             android:text="नमस्कार 👋"
                             android:textColor="#B3FFFFFF"
-                            android:textSize="12sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_welcome"
@@ -49,7 +51,7 @@
                             android:focusable="true"
                             android:text="शेतकरी"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -58,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:text="📍 Location Loading..."
                             android:textColor="@color/green_mid"
-                            android:textSize="10sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <FrameLayout
@@ -69,22 +71,22 @@
                         android:focusable="true">
 
                         <TextView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:background="@drawable/bg_icon_circle"
                             android:gravity="center"
                             android:text="🔔"
-                            android:textSize="18sp" />
+                            android:textSize="24sp" />
 
                         <TextView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_gravity="top|end"
                             android:background="@drawable/bg_notif_badge"
                             android:gravity="center"
                             android:text="0"
                             android:textColor="@color/white"
-                            android:textSize="8sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
                     </FrameLayout>
                 </LinearLayout>
@@ -93,22 +95,22 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:background="#26FFFFFF"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="⛅"
-                        android:textSize="24sp" />
+                        android:textSize="32sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="12dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -118,7 +120,7 @@
                             android:layout_height="wrap_content"
                             android:text="--°C"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -127,7 +129,7 @@
                             android:layout_height="wrap_content"
                             android:text="Loading weather..."
                             android:textColor="#CCFFFFFF"
-                            android:textSize="10sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -142,7 +144,7 @@
                             android:layout_height="wrap_content"
                             android:text="आर्द्रता"
                             android:textColor="#B3FFFFFF"
-                            android:textSize="10sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_humidity"
@@ -150,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:text="--%"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
@@ -161,8 +163,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:columnCount="4"
-                android:padding="12dp">
+                android:columnCount="3"
+                android:padding="16dp">
 
                 <LinearLayout
                     android:id="@+id/btn_disease"
@@ -174,20 +176,21 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_action_disease"
                         android:gravity="center"
                         android:text="🔬"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="रोग तपासा"
                         android:textColor="@color/text_color"
-                        android:textSize="10sp" />
+                        android:textSize="12sp"
+                        android:gravity="center"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -200,20 +203,21 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_action_advisory"
                         android:gravity="center"
                         android:text="💬"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="AI सल्ला"
                         android:textColor="@color/text_color"
-                        android:textSize="10sp" />
+                        android:textSize="12sp"
+                        android:gravity="center"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -226,20 +230,21 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_action_mandi"
                         android:gravity="center"
                         android:text="📈"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="मंडी भाव"
                         android:textColor="@color/text_color"
-                        android:textSize="10sp" />
+                        android:textSize="12sp"
+                        android:gravity="center"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -252,20 +257,21 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_action_weather"
                         android:gravity="center"
                         android:text="🌤"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="हवामान"
                         android:textColor="@color/text_color"
-                        android:textSize="10sp" />
+                        android:textSize="12sp"
+                        android:gravity="center"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -278,74 +284,60 @@
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:background="@drawable/bg_lang_option"
                         android:gravity="center"
                         android:text="🌱"
-                        android:textSize="20sp" />
+                        android:textSize="28sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:text="पीक जोडा"
                         android:textColor="@color/text_color"
-                        android:textSize="10sp" />
+                        android:textSize="12sp"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_crop_tracking"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_lang_option"
+                        android:gravity="center"
+                        android:text="📊"
+                        android:textSize="28sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="पीक ट्रॅकिंग"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp"
+                        android:gravity="center"/>
                 </LinearLayout>
             </GridLayout>
 
-            <!-- Alerts Strip -->
-            <LinearLayout
-                android:id="@+id/layout_alert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:background="@drawable/bg_alert_strip"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⚠️"
-                    android:textSize="18sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="हवामान सतर्कता"
-                        android:textColor="@color/amber"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_alert_message"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="पाऊस अपेक्षित — सिंचन थांबवा"
-                        android:textColor="#5D4037"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Crop Card -->
+            <!-- Crop Card (Moved up to ensure visibility) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:background="@drawable/bg_card"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -360,7 +352,7 @@
                         android:layout_weight="1"
                         android:text="No active crop registered"
                         android:textColor="@color/text_color"
-                        android:textSize="12sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -368,13 +360,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_chip_green"
-                        android:paddingStart="8dp"
-                        android:paddingTop="2dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="2dp"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="4dp"
                         android:text="Healthy"
                         android:textColor="@color/green_primary"
-                        android:textSize="10sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </LinearLayout>
@@ -383,18 +375,18 @@
                     android:id="@+id/tv_progress_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:text="Growth Progress"
                     android:textColor="@color/muted_color"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:visibility="gone" />
 
                 <ProgressBar
                     android:id="@+id/pb_crop_growth"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="6dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="8dp"
                     android:progress="0"
                     android:progressTint="@color/green_primary"
                     android:visibility="gone" />
@@ -405,9 +397,65 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
                     android:text="+ Add New Crop"
                     android:textColor="@color/green_primary"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Alerts Strip (Limited height with internal scroll) -->
+            <LinearLayout
+                android:id="@+id/layout_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:background="@drawable/bg_alert_strip"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚠️"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="हवामान सतर्कता / Weather Alert"
+                        android:textColor="@color/amber"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Nested scroll area for long advisories -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp">
+
+                        <androidx.core.widget.NestedScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxHeight="150dp">
+
+                            <TextView
+                                android:id="@+id/tv_alert_message"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="पाऊस अपेक्षित — सिंचन थांबवा"
+                                android:textColor="#5D4037"
+                                android:textSize="14sp" />
+                        </androidx.core.widget.NestedScrollView>
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

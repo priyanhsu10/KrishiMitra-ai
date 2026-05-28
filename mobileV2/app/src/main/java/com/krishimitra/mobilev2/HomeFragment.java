@@ -59,6 +59,8 @@ public class HomeFragment extends Fragment {
         binding.btnNotifications.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_NotificationsFragment));
         binding.tvWelcome.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_ProfileFragment));
         
+        binding.btnCropTracking.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_CropTrackingFragment));
+        
         View.OnClickListener addCropListener = v -> {
             if (currentFarmId != null) {
                 Bundle bundle = new Bundle();
@@ -77,7 +79,9 @@ public class HomeFragment extends Fragment {
         String farmerId = sessionManager.getFarmerId();
         if (farmerId == null) return;
 
-        RetrofitClient.INSTANCE.getWeatherApi().getWeather(farmerId, null).enqueue(new Callback<com.krishimitra.mobilev2.data.api.WeatherResponse>() {
+        String language = sessionManager.getLanguage();
+
+        RetrofitClient.INSTANCE.getWeatherApi().getWeather(farmerId, null, language).enqueue(new Callback<com.krishimitra.mobilev2.data.api.WeatherResponse>() {
             @Override
             public void onResponse(Call<com.krishimitra.mobilev2.data.api.WeatherResponse> call, Response<com.krishimitra.mobilev2.data.api.WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -98,7 +102,11 @@ public class HomeFragment extends Fragment {
                     }
                     
                     String language = sessionManager.getLanguage();
-                    String advice = "mr".equalsIgnoreCase(language) ? weather.getAdvice_mr() : weather.getAdvice_en();
+                    String advice = weather.getAdvice();
+                    if (advice == null || advice.isEmpty()) {
+                        advice = "mr".equalsIgnoreCase(language) ? weather.getAdvice_mr() : weather.getAdvice_en();
+                    }
+
                     if (advice != null && !advice.isEmpty()) {
                         binding.layoutAlert.setVisibility(View.VISIBLE);
                         binding.tvAlertMessage.setText(advice);
@@ -151,6 +159,7 @@ public class HomeFragment extends Fragment {
                     binding.pbCropGrowth.setProgress(45); // Mock progress
                     binding.btnRegisterNewCrop.setVisibility(View.GONE);
                     sessionManager.saveCropType(crop.getCrop_type());
+                    sessionManager.saveCropId(crop.getCrop_id());
                 } else {
                     binding.tvCropInfo.setText("No active crop registered");
                     binding.btnRegisterNewCrop.setVisibility(View.VISIBLE);
