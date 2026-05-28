@@ -2,6 +2,7 @@ package com.krishimitra.mobilev2.data.api
 
 import com.krishimitra.mobilev2.data.model.DiseaseDetectionResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -21,9 +22,9 @@ interface DiseaseApi {
     @Multipart
     @POST("disease/detect")
     fun detectDisease(
-        @Part farmer_id: String,
-        @Part crop_id: String,
-        @Part crop_type: String,
+        @Part("farmer_id") farmer_id: RequestBody,
+        @Part("crop_id") crop_id: RequestBody,
+        @Part("crop_type") crop_type: RequestBody,
         @Part file: MultipartBody.Part
     ): Call<DiseaseDetectionResponse>
 }

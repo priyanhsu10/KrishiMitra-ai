@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,7 @@ public class CropRegistrationFragment extends Fragment {
     private FragmentCropRegistrationBinding binding;
     private String farmId;
     private String selectedCrop = "Soybean";
+    private String[] cropStages = {"Vegetative (वाढ)", "Flowering (फुलोरा)", "Pod formation (शेंगा धरणे)", "Maturity (पक्वता)"};
 
     @Nullable
     @Override
@@ -41,17 +44,21 @@ public class CropRegistrationFragment extends Fragment {
             farmId = getArguments().getString("farm_id");
         }
 
+        // Setup Crop Stage Dropdown
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_dropdown_item_1line, cropStages);
+        binding.autoCropStage.setAdapter(adapter);
+
         binding.optionSoybean.setOnClickListener(v -> selectCrop("Soybean", binding.optionSoybean));
         binding.optionCotton.setOnClickListener(v -> selectCrop("Cotton", binding.optionCotton));
-        binding.optionCorn.setOnClickListener(v -> selectCrop("Corn", binding.optionCorn));
-        binding.optionOnion.setOnClickListener(v -> selectCrop("Onion", binding.optionOnion));
+        
+        // Initial selection
+        binding.etCropType.setText(selectedCrop);
 
         binding.btnSaveCrop.setOnClickListener(v -> {
             String cropType = binding.etCropType.getText().toString();
-            if (cropType.isEmpty()) cropType = selectedCrop;
-            
             String sowingDate = binding.etSowingDate.getText().toString();
-            String stage = binding.etStage.getText().toString();
+            String stage = binding.autoCropStage.getText().toString();
 
             if (!cropType.isEmpty() && !sowingDate.isEmpty() && !stage.isEmpty()) {
                 saveCrop(cropType, sowingDate, stage);
@@ -65,9 +72,8 @@ public class CropRegistrationFragment extends Fragment {
         selectedCrop = crop;
         binding.optionSoybean.setBackgroundResource(R.drawable.bg_lang_option);
         binding.optionCotton.setBackgroundResource(R.drawable.bg_lang_option);
-        binding.optionCorn.setBackgroundResource(R.drawable.bg_lang_option);
-        binding.optionOnion.setBackgroundResource(R.drawable.bg_lang_option);
         view.setBackgroundResource(R.drawable.bg_lang_option_selected);
+        binding.etCropType.setText(crop);
     }
 
     private void saveCrop(String cropType, String sowingDate, String stage) {

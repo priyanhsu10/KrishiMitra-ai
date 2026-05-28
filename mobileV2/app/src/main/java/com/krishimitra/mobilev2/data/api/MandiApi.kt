@@ -14,7 +14,7 @@ interface MandiApi {
      * Get mandi price information for a crop.
      * GET /api/v1/mandi?crop={crop}&state={state}
      */
-    @GET("mandi")
+    @GET("mandi/prices")
     fun getMandiPrices(
         @Query("crop") crop: String,
         @Query("state") state: String

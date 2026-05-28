@@ -64,7 +64,7 @@ async def get_crop_advisory(
         prompt = get_advisory_prompt(crop_type, stage, language, question, weather_summary)
         
         response = client.chat.completions.create(
-            model="anthropic/claude-3.5-sonnet",  # OpenRouter model identifier
+            model="openai/gpt-4",  # OpenRouter model identifier
             max_tokens=500,
             messages=[{
                 "role": "user",

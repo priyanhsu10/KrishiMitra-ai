@@ -125,10 +125,14 @@ public class DiseaseDetectionFragment extends Fragment {
         if (farmerId == null) farmerId = "unknown";
         if (cropType == null) cropType = "Soybean";
 
+        RequestBody farmerIdPart = RequestBody.create(MediaType.parse("text/plain"), farmerId);
+        RequestBody cropIdPart = RequestBody.create(MediaType.parse("text/plain"), "crop_id_placeholder");
+        RequestBody cropTypePart = RequestBody.create(MediaType.parse("text/plain"), cropType);
+
         RetrofitClient.INSTANCE.getDiseaseApi().detectDisease(
-                farmerId,
-                "crop_id_placeholder", // Ideally should be from active crop session
-                cropType,
+                farmerIdPart,
+                cropIdPart,
+                cropTypePart,
                 body
         ).enqueue(new Callback<DiseaseDetectionResponse>() {
             @Override

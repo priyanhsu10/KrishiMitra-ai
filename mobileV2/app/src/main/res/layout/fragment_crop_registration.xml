@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
@@ -13,6 +14,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="←"
@@ -83,8 +85,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="पीक प्रकार / Crop Type"
-                android:textColor="@color/muted_color"
-                android:textSize="11sp" />
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <GridLayout
                 android:layout_width="match_parent"
@@ -116,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="सोयाबीन"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -145,77 +148,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="कपाशी"
-                        android:textColor="@color/text_color"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/option_corn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/bg_lang_option"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="12dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🌽"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="मका"
-                        android:textColor="@color/text_color"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/option_onion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/bg_lang_option"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="12dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🧅"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="कांदा"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
             </GridLayout>
 
-            <!-- Keeping EditTexts for logic compatibility -->
             <EditText
                 android:id="@+id/et_crop_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/bg_lang_option"
-                android:hint="Enter Crop Type"
+                android:hint="Selected Crop"
                 android:inputType="text"
-                android:padding="12dp"
+                android:padding="14dp"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <EditText
@@ -224,40 +171,54 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_lang_option"
-                android:hint="पेरणी तारीख (YYYY-MM-DD)"
+                android:hint="पेरणी तारीख / Sowing Date (YYYY-MM-DD)"
                 android:inputType="date"
-                android:padding="12dp"
+                android:padding="14dp"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="पिकाचा टप्पा / Crop Stage"
-                android:textColor="@color/muted_color"
-                android:textSize="11sp" />
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/et_stage"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_lang_option"
-                android:hint="वाढ (Vegetative)"
-                android:inputType="text"
-                android:padding="12dp"
-                android:textSize="14sp" />
+                android:layout_marginBottom="24dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/auto_crop_stage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_lang_option"
+                    android:hint="Select Crop Stage"
+                    android:inputType="none"
+                    android:padding="14dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_save_crop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="@color/green_primary"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:text="✓ नोंदणी पूर्ण / Complete"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <ProgressBar

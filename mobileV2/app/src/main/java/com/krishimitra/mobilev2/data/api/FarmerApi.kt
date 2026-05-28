@@ -35,7 +35,7 @@ interface FarmerApi {
      * Get farms for a farmer.
      */
     @GET("farms")
-    fun getFarms(@Query("farmer_id") farmerId: String): Call<List<FarmResponse>>
+    fun getFarms(@Query("farmer_id") farmerId: String): Call<FarmListResponse>
 
     /**
      * Register a new crop for a farm.
@@ -48,8 +48,19 @@ interface FarmerApi {
      * Get crops for a farm.
      */
     @GET("crops")
-    fun getCrops(@Query("farm_id") farmId: String): Call<List<CropResponse>>
+    fun getCrops(@Query("farm_id") farmId: String): Call<CropListResponse>
 }
+
+// Response Wrapper DTOs
+data class FarmListResponse(
+    val farms: List<FarmResponse>,
+    val count: Int
+)
+
+data class CropListResponse(
+    val crops: List<CropResponse>,
+    val count: Int
+)
 
 // Request DTOs
 data class FarmerRequest(

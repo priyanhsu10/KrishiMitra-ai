@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.krishimitra.mobilev2.data.RetrofitClient;
 import com.krishimitra.mobilev2.data.SessionManager;
+import com.krishimitra.mobilev2.data.api.AdvisoryListResponse;
 import com.krishimitra.mobilev2.databinding.FragmentNotificationsBinding;
 
 import java.util.ArrayList;
@@ -54,18 +55,18 @@ public class NotificationsFragment extends Fragment {
         String farmerId = sessionManager.getFarmerId();
         if (farmerId == null) return;
 
-        RetrofitClient.INSTANCE.getAdvisoryApi().getAdvisories(farmerId, false).enqueue(new Callback<List<Map<String, Object>>>() {
+        RetrofitClient.INSTANCE.getAdvisoryApi().getAdvisories(farmerId, false).enqueue(new Callback<AdvisoryListResponse>() {
             @Override
-            public void onResponse(Call<List<Map<String, Object>>> call, Response<List<Map<String, Object>>> response) {
+            public void onResponse(Call<AdvisoryListResponse> call, Response<AdvisoryListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    adapter.setNotifications(response.body());
+                    adapter.setNotifications(response.body().getAdvisories());
                 } else {
                     Toast.makeText(getContext(), "No notifications found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Map<String, Object>>> call, Throwable t) {
+            public void onFailure(Call<AdvisoryListResponse> call, Throwable t) {
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.MobileV2" parent="Base.Theme.MobileV2" />
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize10" parent="">
+        <item name="cornerSize">10dp</item>
+    </style>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
@@ -13,6 +14,7 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="←"
@@ -82,17 +84,19 @@
                 android:id="@+id/et_farm_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/bg_lang_option"
-                android:hint="शेताचे नाव"
+                android:hint="शेताचे नाव / Farm Name"
                 android:inputType="text"
-                android:padding="12dp"
+                android:padding="14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/muted_color"
                 android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/bg_action_weather"
                 android:gravity="center"
                 android:orientation="vertical"
@@ -143,76 +147,54 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_lang_option"
-                android:hint="क्षेत्रफळ (एकर)"
+                android:hint="क्षेत्रफळ (एकर) / Area (Acre)"
                 android:inputType="numberDecimal"
-                android:padding="12dp"
+                android:padding="14dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/muted_color"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="जमिनीचा प्रकार / Soil Type"
-                android:textColor="@color/muted_color"
-                android:textSize="11sp" />
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                android:orientation="horizontal">
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:hintEnabled="false">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_btn_filled_sm"
-                    android:padding="8dp"
-                    android:text="काळी माती"
-                    android:textColor="@color/white"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_lang_option"
-                    android:padding="8dp"
-                    android:text="लाल माती"
-                    android:textColor="@color/text_color"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/auto_soil_type"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_lang_option"
-                    android:padding="8dp"
-                    android:text="वालुकामय"
-                    android:textColor="@color/text_color"
-                    android:textSize="11sp" />
-            </LinearLayout>
-
-            <!-- Using a simple EditText for soil type input to match logic -->
-            <EditText
-                android:id="@+id/et_soil_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_lang_option"
-                android:hint="Enter Soil Type"
-                android:inputType="text"
-                android:padding="12dp"
-                android:textSize="14sp" />
+                    android:hint="Select Soil Type"
+                    android:inputType="none"
+                    android:padding="14dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_save_farm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/green_primary"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:text="पुढे / Next →"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <ProgressBar

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,8 @@ import com.krishimitra.mobilev2.data.RetrofitClient;
 import com.krishimitra.mobilev2.data.SessionManager;
 import com.krishimitra.mobilev2.data.model.CropResponse;
 import com.krishimitra.mobilev2.data.model.FarmResponse;
+import com.krishimitra.mobilev2.data.api.FarmListResponse;
+import com.krishimitra.mobilev2.data.api.CropListResponse;
 import com.krishimitra.mobilev2.databinding.FragmentHomeBinding;
 
 import java.util.List;
@@ -26,6 +29,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private SessionManager sessionManager;
+    private String currentFarmId;
 
     @Nullable
     @Override
@@ -41,7 +45,7 @@ public class HomeFragment extends Fragment {
 
         String name = sessionManager.getFarmerName();
         if (name != null) {
-            binding.tvWelcome.setText("Welcome, " + name + "!");
+            binding.tvWelcome.setText("नमस्कार, " + name + "!");
         }
 
         loadFarmerProfile();
@@ -54,6 +58,19 @@ public class HomeFragment extends Fragment {
         binding.btnMandi.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_MandiFragment));
         binding.btnNotifications.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_NotificationsFragment));
         binding.tvWelcome.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_ProfileFragment));
+        
+        View.OnClickListener addCropListener = v -> {
+            if (currentFarmId != null) {
+                Bundle bundle = new Bundle();
+                bundle.putString("farm_id", currentFarmId);
+                NavHostFragment.findNavController(this).navigate(R.id.action_HomeFragment_to_CropRegistrationFragment, bundle);
+            } else {
+                Toast.makeText(getContext(), "शेत माहिती लोड होत आहे, कृपया थांबा...", Toast.LENGTH_SHORT).show();
+            }
+        };
+        
+        binding.btnAddCrop.setOnClickListener(addCropListener);
+        binding.btnRegisterNewCrop.setOnClickListener(addCropListener);
     }
 
     private void loadWeatherSummary() {
@@ -65,9 +82,20 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<com.krishimitra.mobilev2.data.api.WeatherResponse> call, Response<com.krishimitra.mobilev2.data.api.WeatherResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     com.krishimitra.mobilev2.data.api.WeatherResponse weather = response.body();
-                    binding.tvWeatherTemp.setText(String.format("%.1f°C", weather.getTemperature()));
+                    
+                    if (weather.getTemperature() != null) {
+                        binding.tvWeatherTemp.setText(String.format("%.1f°C", weather.getTemperature()));
+                    } else {
+                        binding.tvWeatherTemp.setText("--°C");
+                    }
+
                     binding.tvWeatherDesc.setText(weather.getWeather_summary() != null ? weather.getWeather_summary() : weather.getDescription());
-                    binding.tvHumidity.setText(String.format("%d%%", (int)weather.getHumidity()));
+                    
+                    if (weather.getHumidity() != null) {
+                        binding.tvHumidity.setText(String.format("%d%%", weather.getHumidity().intValue()));
+                    } else {
+                        binding.tvHumidity.setText("--%");
+                    }
                     
                     String language = sessionManager.getLanguage();
                     String advice = "mr".equalsIgnoreCase(language) ? weather.getAdvice_mr() : weather.getAdvice_en();
@@ -90,11 +118,12 @@ public class HomeFragment extends Fragment {
         String farmerId = sessionManager.getFarmerId();
         if (farmerId == null) return;
 
-        RetrofitClient.INSTANCE.getFarmerApi().getFarms(farmerId).enqueue(new Callback<List<FarmResponse>>() {
+        RetrofitClient.INSTANCE.getFarmerApi().getFarms(farmerId).enqueue(new Callback<FarmListResponse>() {
             @Override
-            public void onResponse(Call<List<FarmResponse>> call, Response<List<FarmResponse>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    FarmResponse farm = response.body().get(0);
+            public void onResponse(Call<FarmListResponse> call, Response<FarmListResponse> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().getFarms().isEmpty()) {
+                    FarmResponse farm = response.body().getFarms().get(0);
+                    currentFarmId = farm.getFarm_id();
                     binding.tvLocationInfo.setText(String.format("📍 %s • %.1f acres", farm.getName(), farm.getArea_acres()));
                     loadCrops(farm.getFarm_id());
                 } else {
@@ -103,27 +132,33 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<FarmResponse>> call, Throwable t) {
+            public void onFailure(Call<FarmListResponse> call, Throwable t) {
                 binding.tvCropInfo.setText("Error loading farm data.");
             }
         });
     }
 
     private void loadCrops(String farmId) {
-        RetrofitClient.INSTANCE.getFarmerApi().getCrops(farmId).enqueue(new Callback<List<CropResponse>>() {
+        RetrofitClient.INSTANCE.getFarmerApi().getCrops(farmId).enqueue(new Callback<CropListResponse>() {
             @Override
-            public void onResponse(Call<List<CropResponse>> call, Response<List<CropResponse>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    CropResponse crop = response.body().get(0);
-                    binding.tvCropInfo.setText(String.format("Active Crop: %s (%s stage)", crop.getCrop_type(), crop.getStage()));
+            public void onResponse(Call<CropListResponse> call, Response<CropListResponse> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().getCrops().isEmpty()) {
+                    CropResponse crop = response.body().getCrops().get(0);
+                    binding.tvCropInfo.setText(String.format("🌾 %s — %s टप्पा", crop.getCrop_type(), crop.getStage()));
+                    binding.tvHealthStatus.setVisibility(View.VISIBLE);
+                    binding.tvProgressLabel.setVisibility(View.VISIBLE);
+                    binding.pbCropGrowth.setVisibility(View.VISIBLE);
+                    binding.pbCropGrowth.setProgress(45); // Mock progress
+                    binding.btnRegisterNewCrop.setVisibility(View.GONE);
                     sessionManager.saveCropType(crop.getCrop_type());
                 } else {
-                    binding.tvCropInfo.setText("No crops registered for this farm.");
+                    binding.tvCropInfo.setText("No active crop registered");
+                    binding.btnRegisterNewCrop.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CropResponse>> call, Throwable t) {
+            public void onFailure(Call<CropListResponse> call, Throwable t) {
                 binding.tvCropInfo.setText("Error loading crop data.");
             }
         });

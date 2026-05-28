@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,7 @@ public class FarmerProfileFragment extends Fragment {
 
     private FragmentFarmerProfileBinding binding;
     private SessionManager sessionManager;
+    private String[] states = {"Maharashtra", "Madhya Pradesh", "Gujarat", "Karnataka", "Punjab", "Haryana"};
 
     @Nullable
     @Override
@@ -38,10 +41,16 @@ public class FarmerProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(requireContext());
 
+        // Setup State Dropdown
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_dropdown_item_1line, states);
+        binding.autoState.setAdapter(adapter);
+        binding.autoState.setText(states[0], false); // Default to Maharashtra
+
         binding.btnSave.setOnClickListener(v -> {
             String name = binding.etName.getText().toString();
             String village = binding.etVillage.getText().toString();
-            String state = binding.etState.getText().toString();
+            String state = binding.autoState.getText().toString();
 
             if (!name.isEmpty() && !village.isEmpty() && !state.isEmpty()) {
                 saveProfile(name, village, state);

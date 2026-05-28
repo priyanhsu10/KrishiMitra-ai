@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import android.widget.ArrayAdapter;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,7 @@ public class FarmRegistrationFragment extends Fragment {
 
     private FragmentFarmRegistrationBinding binding;
     private SessionManager sessionManager;
+    private String[] soilTypes = {"काळी माती (Black)", "लाल माती (Red)", "वालुकामय (Sandy)", "पोयटा (Loamy)", "चिकण माती (Clay)"};
 
     @Nullable
     @Override
@@ -38,15 +41,19 @@ public class FarmRegistrationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sessionManager = new SessionManager(requireContext());
 
+        // Setup Soil Type Dropdown
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_dropdown_item_1line, soilTypes);
+        binding.autoSoilType.setAdapter(adapter);
+
         // In a real app, we would use FusedLocationProviderClient here.
-        // For this hackathon, we'll use mock coordinates.
         binding.tvLat.setText("Lat: 18.5204");
         binding.tvLon.setText("Lon: 73.8567");
 
         binding.btnSaveFarm.setOnClickListener(v -> {
             String name = binding.etFarmName.getText().toString();
             String areaStr = binding.etArea.getText().toString();
-            String soil = binding.etSoilType.getText().toString();
+            String soil = binding.autoSoilType.getText().toString();
 
             if (!name.isEmpty() && !areaStr.isEmpty() && !soil.isEmpty()) {
                 saveFarm(name, Double.parseDouble(areaStr), soil);

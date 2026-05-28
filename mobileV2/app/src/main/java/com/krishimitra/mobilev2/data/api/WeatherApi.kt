@@ -37,8 +37,8 @@ interface WeatherApi {
 // Response DTO
 data class WeatherResponse(
     val priority: String?,
-    val temperature: Double,
-    val humidity: Int,
+    val temperature: Double?,
+    val humidity: Double?,
     val description: String?,
     val weather_summary: String?,
     val advice_mr: String?,

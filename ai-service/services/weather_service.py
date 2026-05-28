@@ -125,7 +125,7 @@ async def generate_weather_advisory(
     try:
         # ── Marathi call ──────────────────────────────────────────────────────
         mr_response = llm_client.chat.completions.create(
-            model="anthropic/claude-3.5-sonnet",
+            model="gpt-4",
             max_tokens=400,
             messages=[
                 {
@@ -139,7 +139,7 @@ async def generate_weather_advisory(
 
         # ── English call ──────────────────────────────────────────────────────
         en_response = llm_client.chat.completions.create(
-            model="anthropic/claude-3.5-sonnet",
+            model="gpt-4",
             max_tokens=300,
             messages=[{"role": "user", "content": english_prompt}],
         )

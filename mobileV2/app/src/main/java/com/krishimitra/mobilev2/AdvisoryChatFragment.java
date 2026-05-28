@@ -73,7 +73,10 @@ public class AdvisoryChatFragment extends Fragment {
                 binding.btnSend.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     AdvisoryChatResponse advisory = response.body();
-                    String answer = "marathi".equalsIgnoreCase(language) ? advisory.getAdvice_mr() : advisory.getAdvice_en();
+                    String answer = advisory.getAdvice();
+                    if (answer == null || answer.isEmpty()) {
+                        answer = "marathi".equalsIgnoreCase(language) ? advisory.getAdvice_mr() : advisory.getAdvice_en();
+                    }
                     chatHistory.append("AI: ").append(answer).append("\n\n");
                     binding.tvChatHistory.setText(chatHistory.toString());
                     
