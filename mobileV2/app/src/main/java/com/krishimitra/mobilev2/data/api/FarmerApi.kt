@@ -51,6 +51,12 @@ interface FarmerApi {
     fun getCrops(@Query("farm_id") farmId: String): Call<CropListResponse>
 
     /**
+     * Get AI-assisted timeline for a crop.
+     */
+    @GET("crops/{id}/timeline")
+    fun getCropTimeline(@Path("id") cropId: String): Call<CropTimelineResponse>
+
+    /**
      * Update FCM token for push notifications.
      */
     @PATCH("farmers/{id}/fcm-token")
@@ -66,6 +72,19 @@ data class FarmListResponse(
 data class CropListResponse(
     val crops: List<CropResponse>,
     val count: Int
+)
+
+data class CropTimelineResponse(
+    val crop_id: String,
+    val timeline: List<CropTimelineItemDto>
+)
+
+data class CropTimelineItemDto(
+    val id: String,
+    val stage: String,
+    val estimatedDate: String,
+    val description: String,
+    val completed: Boolean
 )
 
 // Request DTOs

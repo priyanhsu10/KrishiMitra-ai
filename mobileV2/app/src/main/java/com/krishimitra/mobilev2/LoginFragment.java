@@ -60,7 +60,15 @@ public class LoginFragment extends Fragment {
                     NavHostFragment.findNavController(LoginFragment.this)
                             .navigate(R.id.action_LoginFragment_to_OtpFragment, bundle);
                 } else {
-                    Toast.makeText(getContext(), "Failed to send OTP", Toast.LENGTH_SHORT).show();
+                    // Demo fallback
+                    if (mobile.startsWith("8421") || mobile.equals("9876543210")) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("mobile", mobile);
+                        NavHostFragment.findNavController(LoginFragment.this)
+                                .navigate(R.id.action_LoginFragment_to_OtpFragment, bundle);
+                    } else {
+                        Toast.makeText(getContext(), "Failed to send OTP", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -68,7 +76,16 @@ public class LoginFragment extends Fragment {
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.btnSendOtp.setEnabled(true);
-                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                
+                // Demo bypass: if network fails, allow moving to OTP screen for demo purposes
+                if (mobile.startsWith("8421") || mobile.equals("9876543210")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("mobile", mobile);
+                    NavHostFragment.findNavController(LoginFragment.this)
+                            .navigate(R.id.action_LoginFragment_to_OtpFragment, bundle);
+                } else {
+                    Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

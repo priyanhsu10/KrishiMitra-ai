@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment {
         RetrofitClient.INSTANCE.getWeatherApi().getWeather(farmerId, null, language).enqueue(new Callback<com.krishimitra.mobilev2.data.api.WeatherResponse>() {
             @Override
             public void onResponse(Call<com.krishimitra.mobilev2.data.api.WeatherResponse> call, Response<com.krishimitra.mobilev2.data.api.WeatherResponse> response) {
+                if (binding == null) return;
                 if (response.isSuccessful() && response.body() != null) {
                     com.krishimitra.mobilev2.data.api.WeatherResponse weather = response.body();
                     
@@ -129,6 +130,7 @@ public class HomeFragment extends Fragment {
         RetrofitClient.INSTANCE.getFarmerApi().getFarms(farmerId).enqueue(new Callback<FarmListResponse>() {
             @Override
             public void onResponse(Call<FarmListResponse> call, Response<FarmListResponse> response) {
+                if (binding == null) return;
                 if (response.isSuccessful() && response.body() != null && !response.body().getFarms().isEmpty()) {
                     FarmResponse farm = response.body().getFarms().get(0);
                     currentFarmId = farm.getFarm_id();
@@ -141,7 +143,9 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<FarmListResponse> call, Throwable t) {
-                binding.tvCropInfo.setText("Error loading farm data.");
+                if (binding != null) {
+                    binding.tvCropInfo.setText("Error loading farm data.");
+                }
             }
         });
     }
@@ -150,13 +154,27 @@ public class HomeFragment extends Fragment {
         RetrofitClient.INSTANCE.getFarmerApi().getCrops(farmId).enqueue(new Callback<CropListResponse>() {
             @Override
             public void onResponse(Call<CropListResponse> call, Response<CropListResponse> response) {
+                if (binding == null) return;
                 if (response.isSuccessful() && response.body() != null && !response.body().getCrops().isEmpty()) {
                     CropResponse crop = response.body().getCrops().get(0);
                     binding.tvCropInfo.setText(String.format("🌾 %s — %s टप्पा", crop.getCrop_type(), crop.getStage()));
                     binding.tvHealthStatus.setVisibility(View.VISIBLE);
                     binding.tvProgressLabel.setVisibility(View.VISIBLE);
                     binding.pbCropGrowth.setVisibility(View.VISIBLE);
-                    binding.pbCropGrowth.setProgress(45); // Mock progress
+                    
+                    if (crop.getGrowth_progress() != null) {
+                        binding.pbCropGrowth.setProgress(crop.getGrowth_progress());
+                    } else {
+                        binding.pbCropGrowth.setProgress(0);
+                    }
+                    
+                    if (crop.getEstimated_harvest_date() != null) {
+                        binding.tvEstimatedHarvest.setVisibility(View.VISIBLE);
+                        binding.tvEstimatedHarvest.setText("Estimated Harvest: " + crop.getEstimated_harvest_date());
+                    } else {
+                        binding.tvEstimatedHarvest.setVisibility(View.GONE);
+                    }
+
                     binding.btnRegisterNewCrop.setVisibility(View.GONE);
                     sessionManager.saveCropType(crop.getCrop_type());
                     sessionManager.saveCropId(crop.getCrop_id());
@@ -168,7 +186,9 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CropListResponse> call, Throwable t) {
-                binding.tvCropInfo.setText("Error loading crop data.");
+                if (binding != null) {
+                    binding.tvCropInfo.setText("Error loading crop data.");
+                }
             }
         });
     }
@@ -180,6 +200,7 @@ public class HomeFragment extends Fragment {
         RetrofitClient.INSTANCE.getFarmerApi().getFarmer(farmerId).enqueue(new Callback<com.krishimitra.mobilev2.data.model.FarmerResponse>() {
             @Override
             public void onResponse(Call<com.krishimitra.mobilev2.data.model.FarmerResponse> call, Response<com.krishimitra.mobilev2.data.model.FarmerResponse> response) {
+                if (binding == null) return;
                 if (response.isSuccessful() && response.body() != null) {
                     com.krishimitra.mobilev2.data.model.FarmerResponse profile = response.body();
                     sessionManager.saveFarmerName(profile.getName());

@@ -49,7 +49,13 @@ public class CropTrackingFragment extends Fragment {
         sessionManager = new SessionManager(requireContext());
 
         binding.rvCrops.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new CropAdapter(new ArrayList<>());
+        adapter = new CropAdapter(new ArrayList<>(), crop -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("crop_id", crop.getCrop_id());
+            bundle.putString("crop_type", crop.getCrop_type());
+            bundle.putString("sowing_date", crop.getSowing_date());
+            NavHostFragment.findNavController(this).navigate(R.id.action_CropTrackingFragment_to_CropDetailFragment, bundle);
+        });
         binding.rvCrops.setAdapter(adapter);
 
         loadFarmData();
@@ -102,11 +108,17 @@ public class CropTrackingFragment extends Fragment {
         });
     }
 
+    public interface OnCropClickListener {
+        void onCropClick(CropResponse crop);
+    }
+
     private static class CropAdapter extends RecyclerView.Adapter<CropAdapter.ViewHolder> {
         private List<CropResponse> crops;
+        private final OnCropClickListener listener;
 
-        CropAdapter(List<CropResponse> crops) {
+        CropAdapter(List<CropResponse> crops, OnCropClickListener listener) {
             this.crops = crops;
+            this.listener = listener;
         }
 
         void setCrops(List<CropResponse> crops) {
@@ -127,6 +139,20 @@ public class CropTrackingFragment extends Fragment {
             holder.tvType.setText(crop.getCrop_type());
             holder.tvStage.setText(crop.getStage());
             holder.tvDate.setText("Sown: " + crop.getSowing_date());
+            
+            if (crop.getEstimated_harvest_date() != null) {
+                holder.tvHarvest.setText(crop.getEstimated_harvest_date());
+            } else {
+                holder.tvHarvest.setText("Calculating...");
+            }
+
+            if (crop.getGrowth_progress() != null) {
+                holder.pbGrowth.setProgress(crop.getGrowth_progress());
+            } else {
+                holder.pbGrowth.setProgress(0);
+            }
+            
+            holder.itemView.setOnClickListener(v -> listener.onCropClick(crop));
         }
 
         @Override
@@ -135,13 +161,16 @@ public class CropTrackingFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tvType, tvStage, tvDate;
+            TextView tvType, tvStage, tvDate, tvHarvest;
+            android.widget.ProgressBar pbGrowth;
 
             ViewHolder(View view) {
                 super(view);
                 tvType = view.findViewById(R.id.tv_crop_type);
                 tvStage = view.findViewById(R.id.tv_crop_stage);
                 tvDate = view.findViewById(R.id.tv_sowing_date);
+                tvHarvest = view.findViewById(R.id.tv_harvest_date);
+                pbGrowth = view.findViewById(R.id.pb_growth);
             }
         }
     }
