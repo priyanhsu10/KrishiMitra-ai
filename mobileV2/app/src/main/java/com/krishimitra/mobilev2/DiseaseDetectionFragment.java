@@ -253,11 +253,11 @@ public class DiseaseDetectionFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     DiseaseDetectionResponse res = response.body();
                     String language = sessionManager.getLanguage();
-                    boolean isMarathi = "mr".equalsIgnoreCase(language);
+                    boolean isMarathi = "mr".equalsIgnoreCase(language) || "marathi".equalsIgnoreCase(language);
                     
-                    String diseaseName = isMarathi && res.getDisease_mr() != null ? res.getDisease_mr() : res.getDisease();
-                    String remedy = isMarathi ? res.getRemedy_mr() : res.getRemedy_en();
-                    String cause = isMarathi && res.getCause_mr() != null ? res.getCause_mr() : res.getCause_en();
+                    String diseaseName = isMarathi && res.getDisease_mr() != null && !res.getDisease_mr().isEmpty() ? res.getDisease_mr() : res.getDisease();
+                    String remedy = isMarathi && res.getRemedy_mr() != null && !res.getRemedy_mr().isEmpty() ? res.getRemedy_mr() : res.getRemedy_en();
+                    String cause = isMarathi && res.getCause_mr() != null && !res.getCause_mr().isEmpty() ? res.getCause_mr() : res.getCause_en();
                     String severity = res.getSeverity();
                     
                     // Simple severity translation

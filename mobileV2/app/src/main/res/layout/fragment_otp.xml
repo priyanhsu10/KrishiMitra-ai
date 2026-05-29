@@ -69,13 +69,17 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_demo_pin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="32dp"
                 android:text="(Demo PIN: 123456)"
                 android:textColor="@color/muted_color"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
 
             <Button
                 android:id="@+id/btn_verify"

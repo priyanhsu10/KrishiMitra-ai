@@ -15,7 +15,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"http://192.168.1.2:8080/api/v1/\"") // TODO: Replace with your computer's local IP address
+        buildConfigField("String", "BASE_URL", "\"http://192.168.113.151:8080/api/v1/\"") // Updated to match current machine IP
     }
 
     buildTypes {
