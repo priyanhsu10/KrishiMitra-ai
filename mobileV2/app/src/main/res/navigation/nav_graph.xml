@@ -122,7 +122,16 @@
         <action
             android:id="@+id/action_CropTrackingFragment_to_CropRegistrationFragment"
             app:destination="@id/CropRegistrationFragment" />
+        <action
+            android:id="@+id/action_CropTrackingFragment_to_CropDetailFragment"
+            app:destination="@id/CropDetailFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/CropDetailFragment"
+        android:name="com.krishimitra.mobilev2.CropDetailFragment"
+        android:label="Crop Timeline"
+        tools:layout="@layout/fragment_crop_detail" />
 
     <fragment
         android:id="@+id/ProfileFragment"

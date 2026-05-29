@@ -391,6 +391,16 @@
                     android:progressTint="@color/green_primary"
                     android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/tv_estimated_harvest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Estimated Harvest: --"
+                    android:textColor="@color/muted_color"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
                 <Button
                     android:id="@+id/btn_register_new_crop"
                     style="@style/Widget.MaterialComponents.Button.TextButton"

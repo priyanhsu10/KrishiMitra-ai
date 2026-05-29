@@ -97,3 +97,41 @@ async def get_crop_advisory(
     except Exception as e:
         logger.error(f"LLM advisory failed: {e}")
         raise
+
+async def generate_timeline_data(crop_type: str, sowing_date: str) -> Dict:
+    """
+    Generates a structured crop timeline using LLM.
+    """
+    try:
+        prompt = f"""
+        Act as an expert agronomist. Generate a structured crop growth timeline for {crop_type}
+        starting from the sowing date of {sowing_date}.
+        Provide exactly 6 key stages from planting to market/harvest.
+
+        For each stage, provide:
+        1. stage: Short name of the stage (e.g., Germination, Flowering, Harvest).
+        2. estimated_date: The date in YYYY-MM-DD format based on the sowing date.
+        3. description: A one-sentence description of what happens or what the farmer should do.
+
+        Return the result ONLY as a JSON object with a key 'stages' containing a list of these stage objects.
+        """
+
+        response = client.chat.completions.create(
+            model="openai/gpt-4o-mini", # Using a faster model for structured tasks
+            max_tokens=800,
+            response_format={ "type": "json_object" },
+            messages=[{
+                "role": "user",
+                "content": prompt
+            }]
+        )
+
+        result = json.loads(response.choices[0].message.content)
+        return result
+
+    except Exception as e:
+        logger.error(f"Timeline generation failed: {e}")
+        # Fallback if LLM fails
+        return {
+            "stages": []
+        }

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import logging
 
-from routers import disease, advisory, weather, mandi
+from routers import disease, advisory, weather, mandi, crop
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +29,7 @@ app.include_router(disease.router, prefix="/ai", tags=["disease"])
 app.include_router(advisory.router, prefix="/ai", tags=["advisory"])
 app.include_router(weather.router, prefix="/ai", tags=["weather"])
 app.include_router(mandi.router, prefix="/ai", tags=["mandi"])
+app.include_router(crop.router, prefix="/ai", tags=["crop"])
 
 @app.get("/health")
 async def health_check():

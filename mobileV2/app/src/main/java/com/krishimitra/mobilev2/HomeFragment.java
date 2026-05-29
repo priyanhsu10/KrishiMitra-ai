@@ -156,7 +156,20 @@ public class HomeFragment extends Fragment {
                     binding.tvHealthStatus.setVisibility(View.VISIBLE);
                     binding.tvProgressLabel.setVisibility(View.VISIBLE);
                     binding.pbCropGrowth.setVisibility(View.VISIBLE);
-                    binding.pbCropGrowth.setProgress(45); // Mock progress
+                    
+                    if (crop.getGrowth_progress() != null) {
+                        binding.pbCropGrowth.setProgress(crop.getGrowth_progress());
+                    } else {
+                        binding.pbCropGrowth.setProgress(0);
+                    }
+                    
+                    if (crop.getEstimated_harvest_date() != null) {
+                        binding.tvEstimatedHarvest.setVisibility(View.VISIBLE);
+                        binding.tvEstimatedHarvest.setText("Estimated Harvest: " + crop.getEstimated_harvest_date());
+                    } else {
+                        binding.tvEstimatedHarvest.setVisibility(View.GONE);
+                    }
+
                     binding.btnRegisterNewCrop.setVisibility(View.GONE);
                     sessionManager.saveCropType(crop.getCrop_type());
                     sessionManager.saveCropId(crop.getCrop_id());
