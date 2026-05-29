@@ -46,6 +46,7 @@ async def get_weather_advisory(
             stage=stage,
             language=lang,
         )
+        print(advisory)
 
         # ── Step 3: Trigger notification for significant weather events ────────
         should_notify = (
@@ -68,8 +69,9 @@ async def get_weather_advisory(
         # ── Step 4: Return full response ──────────────────────────────────────
         return {
             "weather_summary": weather_data.get("weather_summary", ""),
-            "advice_mr": advisory["advice_mr"],
-            "advice_en": advisory["advice_en"],
+            "advice": advisory.get("advice"),
+            "advice_mr": advisory.get("advice_mr", ""),
+            "advice_en": advisory.get("advice_en", ""),
             "alert_type": "weather",
             "priority": advisory["priority"],
             "temperature": weather_data["temperature"],

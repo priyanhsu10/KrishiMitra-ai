@@ -103,7 +103,41 @@
         <action
             android:id="@+id/action_HomeFragment_to_NotificationsFragment"
             app:destination="@id/NotificationsFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_ProfileFragment"
+            app:destination="@id/ProfileFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_CropRegistrationFragment"
+            app:destination="@id/CropRegistrationFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_CropTrackingFragment"
+            app:destination="@id/CropTrackingFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/CropTrackingFragment"
+        android:name="com.krishimitra.mobilev2.CropTrackingFragment"
+        android:label="Crop Tracking"
+        tools:layout="@layout/fragment_crop_tracking">
+        <action
+            android:id="@+id/action_CropTrackingFragment_to_CropRegistrationFragment"
+            app:destination="@id/CropRegistrationFragment" />
+        <action
+            android:id="@+id/action_CropTrackingFragment_to_CropDetailFragment"
+            app:destination="@id/CropDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CropDetailFragment"
+        android:name="com.krishimitra.mobilev2.CropDetailFragment"
+        android:label="Crop Timeline"
+        tools:layout="@layout/fragment_crop_detail" />
+
+    <fragment
+        android:id="@+id/ProfileFragment"
+        android:name="com.krishimitra.mobilev2.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/DiseaseDetectionFragment"

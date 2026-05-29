@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class CropController {
 
     private final CropRepository cropRepository;
+    private final CropTimelineService timelineService;
 
     /**
      * Create a new crop on a farm.
@@ -43,6 +46,10 @@ public class CropController {
 
         crop = cropRepository.save(crop);
 
+        // Generate AI-assisted timeline asynchronously or synchronously
+        // For hackathon simplicity, doing it synchronously here
+        timelineService.generateTimeline(crop);
+
         return ResponseEntity.ok(Map.of(
             "id", crop.getId(),
             "farm_id", crop.getFarmId(),
@@ -51,6 +58,16 @@ public class CropController {
             "stage", crop.getStage(),
             "created", true
         ));
+    }
+
+    /**
+     * Get timeline for a crop.
+     */
+    @GetMapping("/crops/{id}/timeline")
+    public ResponseEntity<?> getCropTimeline(@PathVariable("id") UUID cropId) {
+        log.info("Fetching timeline for crop: id={}", cropId);
+        List<CropTimelineItem> timeline = timelineService.getTimeline(cropId);
+        return ResponseEntity.ok(Map.of("crop_id", cropId, "timeline", timeline));
     }
 
     /**
@@ -64,13 +81,31 @@ public class CropController {
         List<Crop> crops = cropRepository.findByFarmId(farmId);
 
         List<Map<String, Object>> cropList = crops.stream()
-            .map(c -> Map.<String, Object>of(
-                "id", c.getId(),
-                "farm_id", c.getFarmId(),
-                "crop_type", c.getCropType(),
-                "sowing_date", c.getSowingDate().toString(),
-                "stage", c.getStage()
-            ))
+            .map(c -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", c.getId());
+                map.put("farm_id", c.getFarmId());
+                map.put("crop_type", c.getCropType());
+                map.put("sowing_date", c.getSowingDate().toString());
+                map.put("stage", c.getStage());
+                
+                // Get estimated harvest date from timeline
+                List<CropTimelineItem> timeline = timelineService.getTimeline(c.getId());
+                if (!timeline.isEmpty()) {
+                    LocalDate harvestDate = timeline.get(timeline.size() - 1).getEstimatedDate();
+                    map.put("estimated_harvest_date", harvestDate.toString());
+                    
+                    // Calculate progress based on dates in database
+                    long totalDays = ChronoUnit.DAYS.between(c.getSowingDate(), harvestDate);
+                    if (totalDays > 0) {
+                        long passedDays = ChronoUnit.DAYS.between(c.getSowingDate(), LocalDate.now());
+                        int progress = (int) Math.min(100, Math.max(0, (passedDays * 100) / totalDays));
+                        map.put("growth_progress", progress);
+                    }
+                }
+                
+                return map;
+            })
             .collect(Collectors.toList());
 
         return ResponseEntity.ok(Map.of("crops", cropList, "count", cropList.size()));

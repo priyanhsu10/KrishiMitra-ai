@@ -46,12 +46,14 @@ async def get_mandi_prices(
         # Simple advice based on trend
         rising_count = sum(1 for p in prices if p["trend"] == "rising")
         advice_mr = "बाजारातील भाव वाढत आहेत. विक्री करण्यासाठी योग्य वेळ." if rising_count >= 2 else "भाव स्थिर आहेत. आठवडाभरात विक्री करा."
-        
+        advice_en = "Market prices are rising. Good time to sell." if rising_count >= 2 else "Prices are stable. Consider selling within a week."
+
         return {
             "crop": crop,
             "state": state,
             "prices": prices,
             "advice_mr": advice_mr,
+            "advice_en": advice_en,
             "best_time_to_sell": "now" if rising_count >= 2 else "next_week"
         }
     

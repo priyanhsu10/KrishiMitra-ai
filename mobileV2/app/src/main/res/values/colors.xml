@@ -2,4 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="green_primary">#2E7D32</color>
+    <color name="green_light">#4CAF50</color>
+    <color name="green_mid">#A5D6A7</color>
+    <color name="green_pale">#E8F5E9</color>
+
+    <color name="amber">#F57F17</color>
+    <color name="amber_light">#FFB300</color>
+    <color name="amber_pale">#FFF8E1</color>
+
+    <color name="red">#C62828</color>
+    <color name="red_pale">#FFEBEE</color>
+
+    <color name="blue">#1565C0</color>
+    <color name="blue_pale">#E3F2FD</color>
+
+    <color name="bg_color">#F5F5F0</color>
+    <color name="card_color">#FFFFFF</color>
+    <color name="text_color">#1A1A1A</color>
+    <color name="muted_color">#6B6B6B</color>
+    <color name="border_color">#E0E0E0</color>
 </resources>

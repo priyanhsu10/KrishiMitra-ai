@@ -24,7 +24,7 @@ interface AdvisoryApi {
     fun getAdvisories(
         @Query("farmer_id") farmerId: String,
         @Query("unread") unread: Boolean = false
-    ): Call<List<Map<String, Any>>>
+    ): Call<AdvisoryListResponse>
 
     /**
      * Mark an advisory as read.
@@ -34,6 +34,11 @@ interface AdvisoryApi {
 }
 
 // Request/Response DTOs
+data class AdvisoryListResponse(
+    val advisories: List<Map<String, Any>>,
+    val unread_count: Int
+)
+
 data class AdvisoryChatRequest(
     val farmer_id: String,
     val crop_type: String,

@@ -35,7 +35,7 @@ interface FarmerApi {
      * Get farms for a farmer.
      */
     @GET("farms")
-    fun getFarms(@Query("farmer_id") farmerId: String): Call<List<FarmResponse>>
+    fun getFarms(@Query("farmer_id") farmerId: String): Call<FarmListResponse>
 
     /**
      * Register a new crop for a farm.
@@ -48,8 +48,44 @@ interface FarmerApi {
      * Get crops for a farm.
      */
     @GET("crops")
-    fun getCrops(@Query("farm_id") farmId: String): Call<List<CropResponse>>
+    fun getCrops(@Query("farm_id") farmId: String): Call<CropListResponse>
+
+    /**
+     * Get AI-assisted timeline for a crop.
+     */
+    @GET("crops/{id}/timeline")
+    fun getCropTimeline(@Path("id") cropId: String): Call<CropTimelineResponse>
+
+    /**
+     * Update FCM token for push notifications.
+     */
+    @PATCH("farmers/{id}/fcm-token")
+    fun updateFcmToken(@Path("id") id: String, @Body body: Map<String, String>): Call<Void>
 }
+
+// Response Wrapper DTOs
+data class FarmListResponse(
+    val farms: List<FarmResponse>,
+    val count: Int
+)
+
+data class CropListResponse(
+    val crops: List<CropResponse>,
+    val count: Int
+)
+
+data class CropTimelineResponse(
+    val crop_id: String,
+    val timeline: List<CropTimelineItemDto>
+)
+
+data class CropTimelineItemDto(
+    val id: String,
+    val stage: String,
+    val estimatedDate: String,
+    val description: String,
+    val completed: Boolean
+)
 
 // Request DTOs
 data class FarmerRequest(

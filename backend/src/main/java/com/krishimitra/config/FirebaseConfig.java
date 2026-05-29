@@ -23,13 +23,26 @@ public class FirebaseConfig {
 
     @Bean
     public Optional<FirebaseApp> firebaseApp() {
+        log.info("Attempting to initialize Firebase with resource: {}", credentialsResource);
         try {
+            if (!FirebaseApp.getApps().isEmpty()) {
+                log.info("Firebase already initialized, using existing app.");
+                return Optional.of(FirebaseApp.getInstance());
+            }
+
             // Check if the resource exists
             if (credentialsResource == null || !credentialsResource.exists()) {
-                log.warn("Firebase credentials file not found. Push notifications disabled.");
+                String path = "unknown";
+                try {
+                    path = credentialsResource != null ? credentialsResource.getFile().getAbsolutePath() : "null";
+                } catch (Exception e) {
+                    path = credentialsResource != null ? credentialsResource.getDescription() : "null";
+                }
+                log.error("Firebase credentials file NOT FOUND at: {}. Push notifications disabled.", path);
                 return Optional.empty();
             }
 
+            log.info("Loading Firebase credentials from: {}", credentialsResource.getURL());
             GoogleCredentials credentials = GoogleCredentials
                 .fromStream(credentialsResource.getInputStream());
 
@@ -38,10 +51,10 @@ public class FirebaseConfig {
                 .build();
 
             FirebaseApp app = FirebaseApp.initializeApp(options);
-            log.info("Firebase initialized successfully");
+            log.info("Firebase initialized successfully from {}", credentialsResource.getFilename());
             return Optional.of(app);
         } catch (Exception e) {
-            log.warn("Failed to initialize Firebase: {} - Push notifications disabled.", e.getMessage());
+            log.error("Failed to initialize Firebase: {}", e.getMessage(), e);
             return Optional.empty();
         }
     }

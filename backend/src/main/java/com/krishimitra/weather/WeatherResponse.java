@@ -6,14 +6,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeatherResponse {
+public class WeatherResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty("weather_summary")
     private String weatherSummary;
+
+    @JsonProperty("advice")
+    private String advice;
 
     @JsonProperty("advice_mr")
     private String adviceMr;

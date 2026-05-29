@@ -36,12 +36,13 @@ public class WeatherController {
     @GetMapping
     public ResponseEntity<WeatherResponse> getWeather(
             @RequestParam("farmer_id") UUID farmerId,
-            @RequestParam(value = "farm_id", required = false) UUID farmId) {
+            @RequestParam(value = "farm_id", required = false) UUID farmId,
+            @RequestParam(value = "language", defaultValue = "marathi") String language) {
 
-        log.info("Weather request: farmerId={}, farmId={}", farmerId, farmId);
+        log.info("Weather request: farmerId={}, farmId={}, lang={}", farmerId, farmId, language);
 
         try {
-            WeatherResponse response = weatherService.getWeatherAdvisory(farmerId, farmId);
+            WeatherResponse response = weatherService.getWeatherAdvisory(farmerId, farmId, language);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             log.warn("Bad request for weather: {}", e.getMessage());

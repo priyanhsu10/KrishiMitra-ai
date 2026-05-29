@@ -21,7 +21,7 @@ public class MandiController {
 
     private final MandiService mandiService;
 
-    @GetMapping("/mandi")
+    @GetMapping("/mandi/prices")
     public ResponseEntity<?> getMandiPrices(
             @RequestParam("crop") String crop,
             @RequestParam(value = "state", defaultValue = "Maharashtra") String state) {

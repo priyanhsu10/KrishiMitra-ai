@@ -37,9 +37,13 @@ public class LanguageFragment extends Fragment {
             return;
         }
 
-        binding.btnMarathi.setOnClickListener(v -> selectLanguage("mr"));
-        binding.btnHindi.setOnClickListener(v -> selectLanguage("hi"));
-        binding.btnEnglish.setOnClickListener(v -> selectLanguage("en"));
+        binding.btnContinue.setOnClickListener(v -> {
+            String selectedLang = "en";
+            if (binding.rbMarathi.isChecked()) selectedLang = "mr";
+            else if (binding.rbHindi.isChecked()) selectedLang = "hi";
+            
+            selectLanguage(selectedLang);
+        });
     }
 
     private void selectLanguage(String lang) {

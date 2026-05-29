@@ -1,0 +1,1 @@
+bash /Users/priyanshuparate/projects/hsbc-hackathon/KrishiMitra-ai/trigger_demo_notification.sh

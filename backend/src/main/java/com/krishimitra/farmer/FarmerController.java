@@ -78,7 +78,26 @@ public class FarmerController {
             "name", farmer.getName(),
             "language", farmer.getLanguage(),
             "village", farmer.getVillage(),
-            "state", farmer.getState()
+            "state", farmer.getState(),
+            "fcm_token", farmer.getFcmToken() != null ? farmer.getFcmToken() : ""
         ));
+    }
+
+    /**
+     * Update FCM token for push notifications.
+     * PATCH /api/v1/farmers/{id}/fcm-token
+     */
+    @PatchMapping("/farmers/{id}/fcm-token")
+    public ResponseEntity<?> updateFcmToken(@PathVariable UUID id, @RequestBody Map<String, String> request) {
+        String fcmToken = request.get("fcm_token");
+        log.info("Updating FCM token for farmer {}: tokenLength={}", id, fcmToken != null ? fcmToken.length() : 0);
+
+        Farmer farmer = farmerRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Farmer not found: " + id));
+
+        farmer.setFcmToken(fcmToken);
+        farmerRepository.save(farmer);
+
+        return ResponseEntity.ok(Map.of("success", true));
     }
 }

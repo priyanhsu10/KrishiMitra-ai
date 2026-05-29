@@ -101,8 +101,10 @@ public class WeatherSchedulerService {
                     farmer.getId(), farm.getId(), cropType);
 
                 // Call the existing WeatherService (calls Python AI, triggers /notify if needed)
+                // Use farmer's preferred language for the scheduler run
+                String lang = farmer.getLanguage() != null ? farmer.getLanguage() : "marathi";
                 WeatherResponse weatherResp = weatherService.getWeatherAdvisory(
-                    farmer.getId(), farm.getId()
+                    farmer.getId(), farm.getId(), lang
                 );
 
                 // Check if a new advisory was created by the /notify endpoint

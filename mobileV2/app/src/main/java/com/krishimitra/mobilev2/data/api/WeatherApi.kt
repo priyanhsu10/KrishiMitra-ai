@@ -18,7 +18,8 @@ interface WeatherApi {
     @GET("weather")
     fun getWeather(
         @Query("farmer_id") farmerId: String,
-        @Query("farm_id") farmId: String? = null
+        @Query("farm_id") farmId: String? = null,
+        @Query("language") language: String? = null
     ): Call<WeatherResponse>
 
     /**
@@ -37,10 +38,11 @@ interface WeatherApi {
 // Response DTO
 data class WeatherResponse(
     val priority: String?,
-    val temperature: Double,
-    val humidity: Int,
+    val temperature: Double?,
+    val humidity: Double?,
     val description: String?,
     val weather_summary: String?,
+    val advice: String?,
     val advice_mr: String?,
     val advice_en: String?,
     val alert_type: String?,

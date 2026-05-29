@@ -1,5 +1,7 @@
 package com.krishimitra.mobilev2.data.model
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Farm entity — represents a farmer's farm/land parcel.
  */
@@ -17,6 +19,7 @@ data class Farm(
  * Farm API response
  */
 data class FarmResponse(
+    @SerializedName("id")
     val farm_id: String,
     val farmer_id: String,
     val name: String,
