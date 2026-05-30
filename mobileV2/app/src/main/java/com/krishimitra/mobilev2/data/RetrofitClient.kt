@@ -18,7 +18,7 @@ import com.krishimitra.mobilev2.data.api.NotifyApi
  * Singleton Retrofit client for API communication.
  * Configured with logging interceptor and base URL.
  */
-object RetrofitClient {
+object  RetrofitClient {
 
     private val BASE_URL = BuildConfig.BASE_URL
 
