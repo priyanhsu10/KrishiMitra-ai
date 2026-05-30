@@ -98,20 +98,32 @@ async def get_crop_advisory(
         logger.error(f"LLM advisory failed: {e}")
         raise
 
-async def generate_timeline_data(crop_type: str, sowing_date: str) -> Dict:
+async def generate_timeline_data(crop_type: str, sowing_date: str, language: str = "marathi") -> Dict:
     """
-    Generates a structured crop timeline using LLM.
+    Generates a structured crop growth timeline using LLM in the specified language.
     """
     try:
+        # Map common codes to full names for the LLM
+        lang_map = {
+            "mr": "Marathi",
+            "hi": "Hindi",
+            "en": "English",
+            "marathi": "Marathi",
+            "hindi": "Hindi",
+            "english": "English"
+        }
+        target_lang = lang_map.get(language.lower(), language)
+
         prompt = f"""
         Act as an expert agronomist. Generate a structured crop growth timeline for {crop_type}
         starting from the sowing date of {sowing_date}.
+        IMPORTANT: Provide all text fields (stage, description) in {target_lang}.
         Provide exactly 6 key stages from planting to market/harvest.
 
         For each stage, provide:
-        1. stage: Short name of the stage (e.g., Germination, Flowering, Harvest).
+        1. stage: Short name of the stage in {target_lang}.
         2. estimated_date: The date in YYYY-MM-DD format based on the sowing date.
-        3. description: A one-sentence description of what happens or what the farmer should do.
+        3. description: A one-sentence description in {target_lang} of what happens or what the farmer should do.
 
         Return the result ONLY as a JSON object with a key 'stages' containing a list of these stage objects.
         """

@@ -67,7 +67,7 @@ public class AuthService {
     private Farmer createNewFarmer(String mobile) {
         Farmer farmer = Farmer.builder()
             .mobile(mobile)
-            .language("marathi")
+            .language("mr")
             .build();
         
         farmer = farmerRepository.save(farmer);

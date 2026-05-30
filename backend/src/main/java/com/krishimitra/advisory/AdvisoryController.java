@@ -22,7 +22,7 @@ public class AdvisoryController {
         UUID farmerId = UUID.fromString((String) request.get("farmer_id"));
         String cropType = (String) request.get("crop_type");
         String stage = (String) request.get("stage");
-        String language = (String) request.getOrDefault("language", "marathi");
+        String language = (String) request.getOrDefault("language", "mr");
         String question = (String) request.get("question");
 
         log.info("Advisory chat: farmerId={}, crop={}, language={}", farmerId, cropType, language);

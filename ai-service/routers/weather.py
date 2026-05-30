@@ -14,7 +14,7 @@ async def get_weather_advisory(
     lon: float = Query(..., description="Farm longitude"),
     crop: str = Query(..., description="Crop type e.g. soybean, cotton"),
     stage: str = Query(..., description="Crop stage e.g. vegetative, flowering"),
-    lang: str = Query(default="marathi", description="Language: marathi | hindi | english"),
+    lang: str = Query(default="mr", description="Language: mr | hi | en"),
     farmer_id: str = Query(..., description="Farmer UUID"),
     crop_id: Optional[str] = Query(None, description="Crop UUID (optional)"),
 ):

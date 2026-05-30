@@ -18,13 +18,14 @@ public class CropTimelineService {
     private final CropTimelineRepository timelineRepository;
 
     @SuppressWarnings("unchecked")
-    public void generateTimeline(Crop crop) {
-        log.info("Generating AI-assisted timeline for crop: {} sown on {}", crop.getCropType(), crop.getSowingDate());
+    public void generateTimeline(Crop crop, String language) {
+        log.info("Generating AI-assisted timeline for crop: {} sown on {} in {}", crop.getCropType(), crop.getSowingDate(), language);
 
         try {
             Map<String, Object> aiRequest = new HashMap<>();
             aiRequest.put("crop_type", crop.getCropType());
             aiRequest.put("sowing_date", crop.getSowingDate().toString());
+            aiRequest.put("language", language);
 
             // Step 1: Call AI service for timeline stages
             Map<String, Object> aiResult = aiServiceClient.post()

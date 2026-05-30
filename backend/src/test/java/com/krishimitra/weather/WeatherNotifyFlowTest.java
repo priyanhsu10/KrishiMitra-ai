@@ -40,7 +40,7 @@ class WeatherNotifyFlowTest {
         Farmer f = Farmer.builder()
             .mobile("9000000001")
             .name("Test Farmer")
-            .language("marathi")
+            .language("mr")
             .build();
         farmerId = repo.save(f).getId();
     }
@@ -122,7 +122,7 @@ class WeatherNotifyFlowTest {
     @DisplayName("NOTIFY — farmer without FCM token → advisory saved, fcmSent=false, no exception")
     void advisory_noFcmToken_savedGracefully() {
         Farmer noTokenFarmer = farmerRepository.save(
-            Farmer.builder().mobile("9000000002").language("marathi").build()
+            Farmer.builder().mobile("9000000002").language("mr").build()
         );
 
         NotifyRequest req = NotifyRequest.builder()

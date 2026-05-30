@@ -50,8 +50,9 @@ public class MandiFragment extends Fragment {
 
         final String crop = cropVal;
         final String state = stateVal;
+        String language = sessionManager.getLanguage();
 
-        RetrofitClient.INSTANCE.getMandiApi().getMandiPrices(crop, state).enqueue(new Callback<MandiResponse>() {
+        RetrofitClient.INSTANCE.getMandiApi().getMandiPrices(crop, state, language).enqueue(new Callback<MandiResponse>() {
             @Override
             public void onResponse(Call<MandiResponse> call, Response<MandiResponse> response) {
                 binding.progressBar.setVisibility(View.GONE);
@@ -74,12 +75,16 @@ public class MandiFragment extends Fragment {
     private void displayPrices(MandiResponse mandi) {
         StringBuilder sb = new StringBuilder();
         String language = sessionManager.getLanguage();
+        boolean isEnglish = "en".equalsIgnoreCase(language);
         boolean isMarathi = "mr".equalsIgnoreCase(language);
 
-        sb.append(isMarathi ? "पीक: " : "Crop: ").append(mandi.getCrop()).append("\n");
+        sb.append(isEnglish ? "Crop: " : "पीक/Crop: ").append(mandi.getCrop()).append("\n");
         
-        String advisory = isMarathi ? mandi.getAdvice_mr() : mandi.getAdvice_en();
-        sb.append(isMarathi ? "सल्ला: " : "Advisory: ").append(advisory).append("\n");
+        String advisory = mandi.getAdvice();
+        if (advisory == null || advisory.isEmpty()) {
+            advisory = isMarathi ? mandi.getAdvice_mr() : mandi.getAdvice_en();
+        }
+        sb.append(isEnglish ? "Advisory: " : "सल्ला/Advisory: ").append(advisory).append("\n");
         
         String bestTime = mandi.getBest_time_to_sell();
         if (isMarathi) {

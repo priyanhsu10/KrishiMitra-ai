@@ -60,11 +60,11 @@ public class NotificationService {
             boolean hasFirebase = firebaseMessaging.isPresent();
 
             if (hasToken && hasFirebase) {
-                String language = farmer.getLanguage() != null ? farmer.getLanguage() : "marathi";
+                String language = farmer.getLanguage() != null ? farmer.getLanguage() : "mr";
                 String body = req.getMessageMr(); // default
-                if ("english".equalsIgnoreCase(language)) {
+                if ("en".equalsIgnoreCase(language) || "english".equalsIgnoreCase(language)) {
                     body = req.getMessageEn();
-                } else if ("hindi".equalsIgnoreCase(language) && req.getMessageHi() != null) {
+                } else if (("hi".equalsIgnoreCase(language) || "hindi".equalsIgnoreCase(language)) && req.getMessageHi() != null) {
                     body = req.getMessageHi();
                 }
 
@@ -111,7 +111,7 @@ public class NotificationService {
     }
 
     private String alertTypeLabel(String alertType, String language) {
-        boolean isEnglish = "english".equalsIgnoreCase(language);
+        boolean isEnglish = "en".equalsIgnoreCase(language) || "english".equalsIgnoreCase(language);
         return switch (alertType) {
             case "weather"    -> isEnglish ? "Weather Alert" : "हवामान सूचना";
             case "disease"    -> isEnglish ? "Disease Alert" : "रोग सूचना";

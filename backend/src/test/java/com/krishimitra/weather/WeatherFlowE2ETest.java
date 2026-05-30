@@ -101,7 +101,7 @@ class WeatherFlowE2ETest {
         Farmer farmer = Farmer.builder()
             .mobile("9876543210")
             .name("Ramesh Patil")
-            .language("marathi")
+            .language("mr")
             .village("Pune Rural")
             .state("Maharashtra")
             .fcmToken("test-fcm-token-abc123")
@@ -163,7 +163,7 @@ class WeatherFlowE2ETest {
             .withQueryParam("lon",    equalTo("73.85"))
             .withQueryParam("crop",   equalTo("soybean"))
             .withQueryParam("stage",  equalTo("vegetative"))
-            .withQueryParam("lang",   equalTo("marathi"))
+            .withQueryParam("lang",   equalTo("mr"))
             .withQueryParam("farmer_id", equalTo(farmerId.toString()))
         );
     }
@@ -232,7 +232,7 @@ class WeatherFlowE2ETest {
     @DisplayName("E2E — farmer with no farms → 400 Bad Request")
     void farmerWithNoFarms_returns400() throws Exception {
         Farmer noFarmFarmer = farmerRepository.save(
-            Farmer.builder().mobile("1111111111").language("marathi").build()
+            Farmer.builder().mobile("1111111111").language("mr").build()
         );
 
         mockMvc.perform(

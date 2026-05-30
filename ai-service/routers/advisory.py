@@ -12,7 +12,7 @@ class AdvisoryRequest(BaseModel):
     farmer_id: str
     crop_type: str
     stage: str
-    language: str = "marathi"
+    language: str = "mr"
     question: str
     crop_id: Optional[str] = None
     weather_summary: Optional[str] = "No weather data"

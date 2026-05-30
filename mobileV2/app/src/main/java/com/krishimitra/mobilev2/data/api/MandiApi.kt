@@ -17,7 +17,8 @@ interface MandiApi {
     @GET("mandi/prices")
     fun getMandiPrices(
         @Query("crop") crop: String,
-        @Query("state") state: String
+        @Query("state") state: String,
+        @Query("language") language: String
     ): Call<MandiResponse>
 }
 
@@ -25,6 +26,7 @@ interface MandiApi {
 data class MandiResponse(
     val crop: String,
     val prices: List<MandiPrice>,
+    val advice: String?,
     val advice_mr: String,
     val advice_en: String,
     val best_time_to_sell: String

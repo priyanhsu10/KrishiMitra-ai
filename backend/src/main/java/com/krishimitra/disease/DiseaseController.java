@@ -25,7 +25,7 @@ public class DiseaseController {
             @RequestParam("farmer_id") UUID farmerId,
             @RequestParam(value = "crop_id", required = false) UUID cropId,
             @RequestParam("crop_type") String cropType,
-            @RequestParam(value = "language", defaultValue = "marathi") String language) throws IOException {
+            @RequestParam(value = "language", defaultValue = "mr") String language) throws IOException {
 
         log.info("Disease detection requested: farmerId={}, crop={}", farmerId, cropType);
         Map<String, Object> result = diseaseService.detectAndSave(file.getBytes(), farmerId, cropId, cropType, language);

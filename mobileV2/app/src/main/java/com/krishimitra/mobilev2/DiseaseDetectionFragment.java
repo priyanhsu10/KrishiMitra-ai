@@ -49,7 +49,7 @@ public class DiseaseDetectionFragment extends Fragment {
     private SessionManager sessionManager;
     private String currentPhotoPath;
     private Uri photoURI;
-    private String[] cropOptions = {"Soybean", "Cotton", "Rice", "Wheat", "Sugarcane", "Onion", "Other"};
+    private String[] cropOptions = {"Soyabean", "Cotton", "Rice", "Wheat", "Sugarcane", "Onion", "Other"};
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -252,28 +252,44 @@ public class DiseaseDetectionFragment extends Fragment {
                 binding.btnDetect.setEnabled(true);
                 if (response.isSuccessful() && response.body() != null) {
                     DiseaseDetectionResponse res = response.body();
-                    String language = sessionManager.getLanguage();
-                    boolean isMarathi = "mr".equalsIgnoreCase(language) || "marathi".equalsIgnoreCase(language);
+                    String currentLang = sessionManager.getLanguage();
+                    boolean isEnglish = "en".equalsIgnoreCase(currentLang);
                     
-                    String diseaseName = isMarathi && res.getDisease_mr() != null && !res.getDisease_mr().isEmpty() ? res.getDisease_mr() : res.getDisease();
-                    String remedy = isMarathi && res.getRemedy_mr() != null && !res.getRemedy_mr().isEmpty() ? res.getRemedy_mr() : res.getRemedy_en();
-                    String cause = isMarathi && res.getCause_mr() != null && !res.getCause_mr().isEmpty() ? res.getCause_mr() : res.getCause_en();
+                    // If not English, we use the 'mr' fields which now contain the selected local language (Hindi, Marathi, etc.)
+                    String diseaseName = !isEnglish && res.getDisease_mr() != null && !res.getDisease_mr().isEmpty() ? res.getDisease_mr() : res.getDisease();
+                    String remedy = !isEnglish && res.getRemedy_mr() != null && !res.getRemedy_mr().isEmpty() ? res.getRemedy_mr() : res.getRemedy_en();
+                    String cause = !isEnglish && res.getCause_mr() != null && !res.getCause_mr().isEmpty() ? res.getCause_mr() : res.getCause_en();
                     String severity = res.getSeverity();
                     
                     // Simple severity translation
-                    if (isMarathi) {
+                    if (!isEnglish) {
                         if ("high".equalsIgnoreCase(severity)) severity = "उच्च (High)";
                         else if ("medium".equalsIgnoreCase(severity)) severity = "मध्यम (Medium)";
                         else if ("low".equalsIgnoreCase(severity)) severity = "कमी (Low)";
                     }
 
-                    String resultText = isMarathi ? 
-                        String.format("रोग: %s\nगंभीरता: %s\nविश्वासार्हता: %.2f%%\n\nकारण: %s\n\nउपाय: %s", 
+                    String resultText;
+                    if (!isEnglish) {
+                        // Regional language output
+                        String diseaseLabel = "hi".equalsIgnoreCase(currentLang) ? "रोग" : "रोग"; // Generic 'Rog'
+                        String severityLabel = "hi".equalsIgnoreCase(currentLang) ? "गंभीरता" : "गंभीरता";
+                        String confidenceLabel = "hi".equalsIgnoreCase(currentLang) ? "विश्वास" : "विश्वासार्हता";
+                        String causeLabel = "hi".equalsIgnoreCase(currentLang) ? "कारण" : "कारण";
+                        String remedyLabel = "hi".equalsIgnoreCase(currentLang) ? "उपाय" : "उपाय";
+
+                        resultText = String.format("%s: %s\n%s: %s\n%s: %.2f%%\n\n%s: %s\n\n%s: %s", 
+                            diseaseLabel, diseaseName, 
+                            severityLabel, severity, 
+                            confidenceLabel, res.getConfidence() * 100, 
+                            causeLabel, (cause != null && !cause.isEmpty()) ? cause : "N/A", 
+                            remedyLabel, (remedy != null && !remedy.isEmpty()) ? remedy : "N/A");
+                    } else {
+                        // English output
+                        resultText = String.format("Disease: %s\nSeverity: %s\nConfidence: %.2f%%\n\nCause: %s\n\nRemedy: %s",
                             diseaseName, severity, res.getConfidence() * 100, 
-                            cause != null ? cause : "माहिती उपलब्ध नाही", remedy) :
-                        String.format("Disease: %s\nSeverity: %s\nConfidence: %.2f%%\n\nCause: %s\n\nRemedy: %s",
-                            diseaseName, severity, res.getConfidence() * 100, 
-                            cause != null ? cause : "No info available", remedy);
+                            (cause != null && !cause.isEmpty()) ? cause : "No info available", 
+                            (remedy != null && !remedy.isEmpty()) ? remedy : "No info available");
+                    }
                     
                     binding.tvResult.setText(resultText);
                 } else {

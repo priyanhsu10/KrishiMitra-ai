@@ -11,7 +11,7 @@ router = APIRouter()
 async def detect_disease(
     file: UploadFile = File(...),
     crop_type: str = Form(...),
-    language: str = Form(default="marathi"),
+    language: str = Form(default="mr"),
     farmer_id: str = Form(...),
     crop_id: Optional[str] = Form(None)
 ):

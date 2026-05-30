@@ -31,11 +31,11 @@ MOCK_PRICES = {
 @router.get("/mandi")
 async def get_mandi_prices(
     crop: str = Query(...),
-    state: str = Query(default="Maharashtra")
+    state: str = Query(default="Maharashtra"),
+    lang: str = Query(default="mr")
 ):
     """
     Get nearby mandi (market) prices for the specified crop.
-    Returns mock data for hackathon - production should use AGMARKNET API.
     """
     try:
         crop_lower = crop.lower()
@@ -45,15 +45,24 @@ async def get_mandi_prices(
         
         # Simple advice based on trend
         rising_count = sum(1 for p in prices if p["trend"] == "rising")
-        advice_mr = "बाजारातील भाव वाढत आहेत. विक्री करण्यासाठी योग्य वेळ." if rising_count >= 2 else "भाव स्थिर आहेत. आठवडाभरात विक्री करा."
-        advice_en = "Market prices are rising. Good time to sell." if rising_count >= 2 else "Prices are stable. Consider selling within a week."
+
+        is_marathi = lang.lower() in ["mr", "marathi"]
+        is_hindi = lang.lower() in ["hi", "hindi"]
+
+        if is_marathi:
+            advice = "बाजारातील भाव वाढत आहेत. विक्री करण्यासाठी योग्य वेळ." if rising_count >= 2 else "भाव स्थिर आहेत. आठवडाभरात विक्री करा."
+        elif is_hindi:
+            advice = "बाजार में कीमतें बढ़ रही हैं। बेचने का सही समय है।" if rising_count >= 2 else "कीमतें स्थिर हैं। एक हफ्ते के भीतर बेचने पर विचार करें।"
+        else:
+            advice = "Market prices are rising. Good time to sell." if rising_count >= 2 else "Prices are stable. Consider selling within a week."
 
         return {
             "crop": crop,
             "state": state,
             "prices": prices,
-            "advice_mr": advice_mr,
-            "advice_en": advice_en,
+            "advice": advice,
+            "advice_mr": advice if is_marathi else "बाजारातील भाव वाढत आहेत.",
+            "advice_en": "Market prices are rising. Good time to sell." if rising_count >= 2 else "Prices are stable.",
             "best_time_to_sell": "now" if rising_count >= 2 else "next_week"
         }
     

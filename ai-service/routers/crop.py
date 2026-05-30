@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 class TimelineRequest(BaseModel):
     crop_type: str
     sowing_date: str
+    language: str = "marathi"
 
 @router.post("/crop-timeline")
 async def get_crop_timeline(request: TimelineRequest):
@@ -17,12 +18,13 @@ async def get_crop_timeline(request: TimelineRequest):
     Generate an AI-assisted crop timeline with estimated dates and stages.
     """
     try:
-        logger.info(f"Generating timeline for {request.crop_type} sown on {request.sowing_date}")
+        logger.info(f"Generating timeline for {request.crop_type} sown on {request.sowing_date} in {request.language}")
 
         # Call LLM service to generate stages
         timeline = await llm_service.generate_timeline_data(
             request.crop_type,
-            request.sowing_date
+            request.sowing_date,
+            request.language
         )
 
         return timeline

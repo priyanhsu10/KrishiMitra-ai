@@ -24,12 +24,13 @@ public class MandiController {
     @GetMapping("/mandi/prices")
     public ResponseEntity<?> getMandiPrices(
             @RequestParam("crop") String crop,
-            @RequestParam(value = "state", defaultValue = "Maharashtra") String state) {
+            @RequestParam(value = "state", defaultValue = "Maharashtra") String state,
+            @RequestParam(value = "language", defaultValue = "mr") String language) {
 
-        log.info("Mandi price request: crop={}, state={}", crop, state);
+        log.info("Mandi price request: crop={}, state={}, language={}", crop, state, language);
 
         try {
-            Map<String, Object> result = mandiService.getMandiPrices(crop, state);
+            Map<String, Object> result = mandiService.getMandiPrices(crop, state, language);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             log.error("Mandi endpoint error: {}", e.getMessage(), e);
@@ -37,7 +38,8 @@ public class MandiController {
                 "crop", crop,
                 "state", state,
                 "prices", java.util.Collections.emptyList(),
-                "advice_mr", "बाजार भाव उपलब्ध नाही. पुन्हा प्रयत्न करा.",
+                "advice_mr", "बाजार भाव उपलब्ध नाही.",
+                "advice", "Information unavailable",
                 "best_time_to_sell", "unknown"
             ));
         }

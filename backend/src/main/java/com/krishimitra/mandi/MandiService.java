@@ -15,13 +15,14 @@ public class MandiService {
     private final WebClient aiServiceClient;
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getMandiPrices(String crop, String state) {
+    public Map<String, Object> getMandiPrices(String crop, String state, String language) {
         try {
             Map<String, Object> aiResponse = aiServiceClient.get()
                 .uri(uriBuilder -> uriBuilder
                     .path("/ai/mandi")
                     .queryParam("crop", crop)
                     .queryParam("state", state)
+                    .queryParam("lang", language)
                     .build())
                 .retrieve()
                 .bodyToMono(Map.class)

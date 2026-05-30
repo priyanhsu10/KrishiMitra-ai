@@ -61,7 +61,7 @@ public class CropRegistrationFragment extends Fragment {
                 android.R.layout.simple_dropdown_item_1line, cropStages);
         binding.autoCropStage.setAdapter(adapter);
 
-        binding.optionSoybean.setOnClickListener(v -> selectCrop("Soybean", binding.optionSoybean));
+        binding.optionSoybean.setOnClickListener(v -> selectCrop("Soyabean", binding.optionSoybean));
         binding.optionCotton.setOnClickListener(v -> selectCrop("Cotton", binding.optionCotton));
         binding.optionRice.setOnClickListener(v -> selectCrop("Rice", binding.optionRice));
         binding.optionWheat.setOnClickListener(v -> selectCrop("Wheat", binding.optionWheat));
@@ -116,7 +116,8 @@ public class CropRegistrationFragment extends Fragment {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.btnSaveCrop.setEnabled(false);
 
-        CropRequest request = new CropRequest(farmId, cropType, sowingDate, stage);
+        String language = new com.krishimitra.mobilev2.data.SessionManager(requireContext()).getLanguage();
+        CropRequest request = new CropRequest(farmId, cropType, sowingDate, stage, language);
 
         RetrofitClient.INSTANCE.getFarmerApi().createCrop(request).enqueue(new Callback<CropResponse>() {
             @Override

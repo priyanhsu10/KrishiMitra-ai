@@ -44,14 +44,24 @@ public class CropDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        com.krishimitra.mobilev2.data.SessionManager sessionManager = new com.krishimitra.mobilev2.data.SessionManager(requireContext());
+        String language = sessionManager.getLanguage();
+        boolean isEnglish = "en".equalsIgnoreCase(language);
+
         if (getArguments() != null) {
             cropId = getArguments().getString("crop_id");
             cropType = getArguments().getString("crop_type");
             sowingDate = getArguments().getString("sowing_date");
         }
 
-        binding.tvCropTitle.setText(cropType + " Tracking");
-        binding.tvSowingInfo.setText("Sown on: " + sowingDate);
+        if (!isEnglish) {
+            // Use generic 'Tracking' but can be expanded for specific languages
+            binding.tvCropTitle.setText(cropType + " मागोवा/Tracking");
+            binding.tvSowingInfo.setText("पेरणी/Sowing: " + sowingDate);
+        } else {
+            binding.tvCropTitle.setText(cropType + " Tracking");
+            binding.tvSowingInfo.setText("Sown on: " + sowingDate);
+        }
 
         binding.rvTimeline.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new TimelineAdapter(new ArrayList<>());

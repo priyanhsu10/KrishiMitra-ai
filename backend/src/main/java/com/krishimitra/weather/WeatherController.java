@@ -37,7 +37,7 @@ public class WeatherController {
     public ResponseEntity<WeatherResponse> getWeather(
             @RequestParam("farmer_id") UUID farmerId,
             @RequestParam(value = "farm_id", required = false) UUID farmId,
-            @RequestParam(value = "language", defaultValue = "marathi") String language) {
+            @RequestParam(value = "language", defaultValue = "mr") String language) {
 
         log.info("Weather request: farmerId={}, farmId={}, lang={}", farmerId, farmId, language);
 

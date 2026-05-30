@@ -102,7 +102,7 @@ public class WeatherSchedulerService {
 
                 // Call the existing WeatherService (calls Python AI, triggers /notify if needed)
                 // Use farmer's preferred language for the scheduler run
-                String lang = farmer.getLanguage() != null ? farmer.getLanguage() : "marathi";
+                String lang = farmer.getLanguage() != null ? farmer.getLanguage() : "mr";
                 WeatherResponse weatherResp = weatherService.getWeatherAdvisory(
                     farmer.getId(), farm.getId(), lang
                 );

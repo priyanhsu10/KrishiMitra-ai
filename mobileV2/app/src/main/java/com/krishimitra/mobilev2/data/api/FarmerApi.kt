@@ -109,5 +109,6 @@ data class CropRequest(
     val farm_id: String,
     val crop_type: String,
     val sowing_date: String,
-    val stage: String
+    val stage: String,
+    val language: String = "marathi"
 )

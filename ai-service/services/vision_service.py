@@ -49,13 +49,13 @@ Respond ONLY in valid JSON (no markdown, no explanation):
 
 {{
   "disease": "English disease name",
-  "disease_mr": "रोगाचे नाव मराठीत",
+  "disease_mr": "Disease name in {target_lang}",
   "confidence": 0.85,
   "severity": "high",
-  "cause_en": "Brief cause",
-  "cause_mr": "संक्षिप्त कारण",
-  "remedy_en": "Specific remedy with dosage e.g. 5ml Profenofos per litre, spray in evening",
-  "remedy_mr": "मराठीत उपाय (specific with dosage)",
+  "cause_en": "Brief cause in English",
+  "cause_mr": "Brief cause in {target_lang}",
+  "remedy_en": "Specific remedy with dosage in English e.g. 5ml Profenofos per litre, spray in evening",
+  "remedy_mr": "Specific remedy with dosage in {target_lang}",
   "consult_expert": true
 }}
 
@@ -83,24 +83,43 @@ async def analyze_disease(
     try:
         b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
 
+        # Map language codes to names for the AI
+        lang_map = {
+            "mr": "Marathi",
+            "hi": "Hindi",
+            "en": "English",
+            "marathi": "Marathi",
+            "hindi": "Hindi",
+            "english": "English"
+        }
+        target_lang = lang_map.get(language.lower(), language)
+
+        system_msg = f"You are a plant pathology expert. You must provide disease analysis in BOTH English and {target_lang}. It is CRITICAL that 'disease_mr', 'cause_mr', and 'remedy_mr' are written entirely in {target_lang} script. NEVER copy English text into these fields."
+
         response = client.chat.completions.create(
-            model="anthropic/claude-sonnet-4-5",  # OpenRouter model identifier (updated)
-            max_tokens=1000,
-            messages=[{
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/jpeg;base64,{b64}"
+            model="anthropic/claude-sonnet-4-5",
+            max_tokens=1500,
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_msg
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{b64}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": DISEASE_PROMPT.format(crop_type=crop_type, target_lang=target_lang)
                         }
-                    },
-                    {
-                        "type": "text",
-                        "text": DISEASE_PROMPT.format(crop_type=crop_type)
-                    }
-                ]
-            }]
+                    ]
+                }
+            ]
         )
 
         # Parse JSON response robustly

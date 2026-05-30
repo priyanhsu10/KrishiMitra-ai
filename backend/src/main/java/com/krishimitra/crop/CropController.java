@@ -32,8 +32,10 @@ public class CropController {
         String cropType = (String) request.get("crop_type");
         String sowingDateStr = (String) request.get("sowing_date");
         String stage = (String) request.get("stage");
+        String language = (String) request.get("language");
+        if (language == null) language = "mr";
 
-        log.info("Creating crop: type={}, farmId={}, stage={}", cropType, farmId, stage);
+        log.info("Creating crop: type={}, farmId={}, stage={}, language={}", cropType, farmId, stage, language);
 
         LocalDate sowingDate = LocalDate.parse(sowingDateStr);
 
@@ -46,9 +48,8 @@ public class CropController {
 
         crop = cropRepository.save(crop);
 
-        // Generate AI-assisted timeline asynchronously or synchronously
-        // For hackathon simplicity, doing it synchronously here
-        timelineService.generateTimeline(crop);
+        // Generate AI-assisted timeline synchronously
+        timelineService.generateTimeline(crop, language);
 
         return ResponseEntity.ok(Map.of(
             "id", crop.getId(),
